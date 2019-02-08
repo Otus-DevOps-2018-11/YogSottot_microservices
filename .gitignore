@@ -1,0 +1,18 @@
+/packer/variables.json
+*.tfstate
+*.tfstate.*.backup
+*.tfstate.backup
+*.tfvars
+.terraform/
+/ansible/cache
+/ansible/.gce_cache
+jdauphant.nginx/
+/ansible/.imported_roles/
+# Vagrant & molecule
+.vagrant/
+*.pyc
+.molecule
+.cache
+.pytest_cache
+__pycache__
+.venv
