@@ -1,0 +1,72 @@
+Разница между контейнером и образом
+1. Образ содержит в себе слои только для чтения.
+2. В контейнере содержится слой для записи.
+3. Образ содержит RepoTags, это означает, что его можно загрузить в registry.
+4. Контейнер содержит информацию о статусе (запущен или нет) и настройках сети.
+5. Образ содержит информацию о слоях, которые содержит ("RootFS":"Type": "layers", "Layers").
+6. Содержит информацию об ос, на основе которой запускается контейнер (Architecture": "amd64", "Os": "linux").
+
+
+>docker images
+REPOSITORY                  TAG                 IMAGE ID            CREATED              SIZE
+yogsottot/ubuntu-tmp-file   latest              992b7f8dd079        About a minute ago   117MB
+friendlyhello               latest              ab83f016d404        2 hours ago          131MB
+yogsottot/get-started       part2               ab83f016d404        2 hours ago          131MB
+python                      2.7-slim            413ee88c678e        2 days ago           120MB
+ubuntu                      16.04               7e87e2b3bf7a        2 weeks ago          117MB
+hello-world                 latest              e38bc07ac18e        10 months ago        1.85kB
+
+>docker container ls -a
+CONTAINER ID        IMAGE                         COMMAND             CREATED             STATUS                        PORTS               NAMES
+24f9fe088db6        ubuntu:16.04                  "/bin/bash"         31 minutes ago      Exited (1) 31 minutes ago                         sharp_kilby
+4c47507d586b        ubuntu:16.04                  "/bin/bash"         32 minutes ago      Exited (137) 56 seconds ago                       lucid_diffie
+53d0e7bced9e        ubuntu:16.04                  "/bin/bash"         33 minutes ago      Exited (0) 32 minutes ago                         stupefied_haslett
+1a3748e0d436        ubuntu:16.04                  "/bin/bash"         33 minutes ago      Exited (1) 30 minutes ago                         amazing_snyder
+439abde557cf        yogsottot/get-started:part2   "python app.py"     39 minutes ago      Exited (0) 39 minutes ago                         peaceful_chatterjee
+dc07d7872822        friendlyhello                 "python app.py"     2 hours ago         Exited (137) 2 hours ago                          jolly_benz
+a627b604af8a        friendlyhello                 "python app.py"     2 hours ago         Exited (137) 2 hours ago                          dreamy_diffie
+0d00ce4d92a2        ubuntu:16.04                  "/bin/bash"         2 hours ago         Exited (0) 2 hours ago                            nostalgic_mclaren
+07f20cc7717e        hello-world                   "/hello"            2 hours ago         Exited (0) 2 hours ago                            upbeat_newton
+0eb9b589e0f5        hello-world                   "/hello"            2 hours ago         Exited (0) 2 hours ago                            eloquent_keller
+6c2169bb106f        hello-world                   "/hello"            8 months ago        Exited (0) 8 months ago                           gracious_euler
+
+>docker system df
+TYPE                TOTAL               ACTIVE              SIZE                RECLAIMABLE
+Images              5                   3                   248.2MB             237.6MB (95%)
+Containers          11                  0                   970.2kB             970.2kB (100%)
+Local Volumes       0                   0                   0B                  0B
+Build Cache         0                   0                   0B                  0B
+
+
+>docker system df -v
+Images space usage:
+
+REPOSITORY                  TAG                 IMAGE ID            CREATED             SIZE                SHARED SIZE         UNIQUE SIZE         CONTAINERS
+yogsottot/ubuntu-tmp-file   latest              992b7f8dd079        15 minutes ago      117.2MB             117.2MB             45B                 0
+friendlyhello               latest              ab83f016d404        2 hours ago         131MB               120.4MB             10.58MB             3
+python                      2.7-slim            413ee88c678e        2 days ago          120.4MB             120.4MB             0B                  0
+ubuntu                      16.04               7e87e2b3bf7a        2 weeks ago         117.2MB             117.2MB             0B                  5
+hello-world                 latest              e38bc07ac18e        10 months ago       1.848kB             0B                  1.848kB             3
+
+Containers space usage:
+
+CONTAINER ID        IMAGE                         COMMAND             LOCAL VOLUMES       SIZE                CREATED             STATUS                       NAMES
+24f9fe088db6        ubuntu:16.04                  "/bin/bash"         0                   19B                 34 minutes ago      Exited (1) 33 minutes ago    sharp_kilby
+4c47507d586b        ubuntu:16.04                  "/bin/bash"         0                   45B                 34 minutes ago      Exited (137) 3 minutes ago   lucid_diffie
+53d0e7bced9e        ubuntu:16.04                  "/bin/bash"         0                   5B                  35 minutes ago      Exited (0) 35 minutes ago    stupefied_haslett
+1a3748e0d436        ubuntu:16.04                  "/bin/bash"         0                   24B                 35 minutes ago      Exited (1) 32 minutes ago    amazing_snyder
+439abde557cf        yogsottot/get-started:part2   "python app.py"     0                   323kB               42 minutes ago      Exited (0) 41 minutes ago    peaceful_chatterjee
+dc07d7872822        friendlyhello                 "python app.py"     0                   323kB               2 hours ago         Exited (137) 2 hours ago     jolly_benz
+a627b604af8a        friendlyhello                 "python app.py"     0                   323kB               2 hours ago         Exited (137) 2 hours ago     dreamy_diffie
+0d00ce4d92a2        ubuntu:16.04                  "/bin/bash"         0                   35B                 2 hours ago         Exited (0) 2 hours ago       nostalgic_mclaren
+07f20cc7717e        hello-world                   "/hello"            0                   0B                  3 hours ago         Exited (0) 3 hours ago       upbeat_newton
+0eb9b589e0f5        hello-world                   "/hello"            0                   0B                  3 hours ago         Exited (0) 3 hours ago       eloquent_keller
+6c2169bb106f        hello-world                   "/hello"            0                   0B                  8 months ago        Exited (0) 8 months ago      gracious_euler
+
+Local Volumes space usage:
+
+VOLUME NAME         LINKS               SIZE
+
+Build cache usage: 0B
+
+CACHE ID            CACHE TYPE          SIZE                CREATED             LAST USED           USAGE               SHARED
