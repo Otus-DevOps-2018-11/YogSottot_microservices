@@ -443,14 +443,3 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ```cd terraform/stage && terraform get && terraform init && terraform apply -auto-approve=true```  
 - Добавлено несколько плейбуков Ansible с использованием динамического инвентори для установки докера и запуска там образа приложения  
 - Добавлен шаблон пакера, который делает образ с уже установленным Docker  
-
-
-  <details><summary> контейнера</summary><p>
-
-  ```bash
-
-
-
-  ```
-
-  </p></details>
