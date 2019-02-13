@@ -4,7 +4,7 @@
 *.tfstate.backup
 *.tfvars
 .terraform/
-/ansible/cache
+cache/
 /ansible/.gce_cache
 jdauphant.nginx/
 /ansible/.imported_roles/
