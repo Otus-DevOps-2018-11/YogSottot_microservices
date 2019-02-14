@@ -131,7 +131,6 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   </p></details>
 
 - Запущен контейнер ```docker run --name reddit -d --network=host reddit:latest```  
-- После добавления разрешающего правила в vpc firewall, приложение стало доступным  
 - Разрешён входящий TCP-трафик на порт 9292
 
   ```bash
@@ -208,7 +207,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
     </p></details>
 
     Проблема решена путём внесения изменений в конфиг ```mongod.conf```, а также исправлением опечатки в ```start.sh```  
-    Был создан исправленный образ yogsottot/otus-reddit:1.01
+    Был создан исправленный образ yogsottot/otus-reddit:1.02
     Удалил старый контейнер и запустил новый ```docker run --name reddit -d -p 9292:9292 yogsottot/otus-reddit:1.02```
 
     <details><summary>Изменения</summary><p>
