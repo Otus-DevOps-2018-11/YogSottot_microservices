@@ -442,4 +442,101 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 - Настроено поднятие инстансов с помощью Terraform, их количество задается переменной ```count_app```  
   ```cd terraform/stage && terraform get && terraform init && terraform apply -auto-approve=true```  
 - Добавлено несколько плейбуков Ansible (```site_dynamic.yml```, ```docker_dynamic.yml```, ```deploy_dynamic.yml```) с использованием динамического инвентори для установки докера и запуска там образа приложения. Используется скрипт ```gce_googleapiclient.py```. Отличается от ```gce.py``` тем, что использует для авторизации тот же механизм, что и утилиты gcloud. Нет необходимости скачивать service_account.json
-- Добавлен шаблон пакера, который делает образ с уже установленным Docker  
+- Добавлен шаблон пакера, который делает образ с уже установленным Docker с помощью плейбука ```packer_docker.yml```  
+  ```packer.io build -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json```  
+  <details><summary>Создание образа</summary><p>
+
+  ```bash
+
+  >packer.io validate -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json 
+  Template validated successfully.
+  [neko:~/IdeaProjects/YogSottot_microservices] $ 
+  >packer.io build -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json         
+  googlecompute output will be in this color.
+  
+  ==> googlecompute: Checking image does not exist...
+  ==> googlecompute: Creating temporary SSH key for instance...
+  ==> googlecompute: Using image: ubuntu-1604-xenial-v20190212
+  ==> googlecompute: Creating instance...
+      googlecompute: Loading zone: europe-north1-b
+      googlecompute: Loading machine type: f1-micro
+      googlecompute: Requesting instance creation...
+      googlecompute: Waiting for creation operation to complete...
+      googlecompute: Instance has been created!
+  ==> googlecompute: Waiting for the instance to become running...
+      googlecompute: IP: 35.228.178.92
+  ==> googlecompute: Using ssh communicator to connect: 35.228.178.92
+  ==> googlecompute: Waiting for SSH to become available...
+  ==> googlecompute: Connected to SSH!
+  ==> googlecompute: Provisioning with Ansible...
+  ==> googlecompute: Executing Ansible: ansible-playbook --extra-vars packer_build_name=googlecompute packer_builder_type=googlecompute -i /tmp/packer-provisioner-ansible167512139 ~/YogSottot_microservices/docker-monolith/infra/ansible/playbooks/packer_docker.yml -e ansible_ssh_private_key_file=/tmp/ansible-key903690140
+      googlecompute:
+      googlecompute: PLAY [Configure App] ***********************************************************
+      googlecompute:
+      googlecompute: TASK [Gathering Facts] *********************************************************
+      googlecompute: ok: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : include_tasks] **************************************
+      googlecompute: skipping: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : include_tasks] **************************************
+      googlecompute: included: ~/YogSottot_microservices/docker-monolith/infra/ansible/roles/geerlingguy.docker/tasks/setup-Debian.yml for default
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : Ensure old versions of Docker are not installed.] ***
+      googlecompute: ok: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : Ensure dependencies are installed.] *****************
+      googlecompute: ok: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : Add Docker apt key.] ********************************
+      googlecompute: changed: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : Ensure curl is present (on older systems without SNI).] ***
+      googlecompute: skipping: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : Add Docker apt key (alternative for older systems without SNI).] ***
+      googlecompute: skipping: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : Add Docker repository.] *****************************
+      googlecompute: changed: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : Install Docker.] ************************************
+      googlecompute: changed: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : Ensure containerd service dir exists.] **************
+      googlecompute: changed: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : Add shim to ensure Docker can start in all environments.] ***
+      googlecompute: changed: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : Reload systemd daemon if template is changed.] ******
+      googlecompute: ok: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : Ensure Docker is started and enabled at boot.] ******
+      googlecompute: ok: [default]
+      googlecompute:
+      googlecompute: RUNNING HANDLER [geerlingguy.docker : restart docker] **************************
+      googlecompute: changed: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : include_tasks] **************************************
+      googlecompute: skipping: [default]
+      googlecompute:
+      googlecompute: TASK [geerlingguy.docker : include_tasks] **************************************
+      googlecompute: skipping: [default]
+      googlecompute:
+      googlecompute: PLAY RECAP *********************************************************************
+      googlecompute: default                    : ok=12   changed=6    unreachable=0    failed=0
+      googlecompute:
+  ==> googlecompute: Deleting instance...
+      googlecompute: Instance has been deleted!
+  ==> googlecompute: Creating image...
+  ==> googlecompute: Deleting disk...
+      googlecompute: Disk has been deleted!
+  Build 'googlecompute' finished.
+  
+  ==> Builds finished. The artifacts of successful builds are:
+  --> googlecompute: A disk image was created: reddit-docker-1550134658
+
+  ```
+
+  </p></details>

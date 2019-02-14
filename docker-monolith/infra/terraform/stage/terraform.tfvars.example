@@ -1,0 +1,10 @@
+project = "docker-231609"
+public_key_path = "~/.ssh/appuser.pub"
+private_key_path = "~/.ssh/appuser"
+disk_image = "ubuntu-1604-lts"
+region = "europe-north1"
+zone = "europe-north1-b"
+count_app = "3"
+count_db = "0"
+source_ranges = ["0.0.0.0/0"]
+app_disk_image = "ubuntu-1604-lts"
