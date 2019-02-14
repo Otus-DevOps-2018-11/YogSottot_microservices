@@ -1,0 +1,5 @@
+{
+"project_id": "docker-231609",
+"source_image_family": "ubuntu-1604-lts",
+"zone": "europe-north1-b"
+}

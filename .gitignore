@@ -1,13 +1,14 @@
-/packer/variables.json
+variables.json
 *.tfstate
 *.tfstate.*.backup
 *.tfstate.backup
 *.tfvars
 .terraform/
-/ansible/cache
-/ansible/.gce_cache
+cache/
+.gce_cache/
 jdauphant.nginx/
-/ansible/.imported_roles/
+geerlingguy.docker/
+.imported_roles/
 # Vagrant & molecule
 .vagrant/
 *.pyc
