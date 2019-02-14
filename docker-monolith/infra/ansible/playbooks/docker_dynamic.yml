@@ -1,0 +1,10 @@
+---
+- name: Configure App
+  hosts: tag_reddit-app
+  become: true
+
+  vars:
+    - docker_install_compose: false
+
+  roles:
+    - geerlingguy.docker

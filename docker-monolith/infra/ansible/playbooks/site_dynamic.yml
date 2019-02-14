@@ -1,0 +1,3 @@
+---
+- import_playbook: docker_dynamic.yml
+- import_playbook: deploy_dynamic.yml

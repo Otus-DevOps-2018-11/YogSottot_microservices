@@ -1,0 +1,19 @@
+---
+- name: Deploy App
+  hosts: tag_reddit-app
+  become: true
+
+  tasks:
+   - name: install docker-module deps
+     apt:
+      update_cache: true
+      name: python-docker
+     register: python_docker_install_result
+     until: python_docker_install_result is success
+
+   - name: Fetch the latest app docker image
+     docker_container:
+      name: reddit
+      image: yogsottot/otus-reddit:1.02
+      network_mode: host
+      published_ports: 9292:9292

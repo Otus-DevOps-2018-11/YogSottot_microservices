@@ -1,0 +1,10 @@
+ansible>=2.4
+
+# gce_googleapiclient.py
+configparser>=3.7.1
+pycrypto>=2.6.1
+docoptcfg>=1.0.2
+oauth2client>=4.1.3
+google-api-python-client>=1.7.6
+pyasn1>=0.4.1
+pyasn1-modules>=0.2.1
