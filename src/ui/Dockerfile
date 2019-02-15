@@ -1,16 +1,13 @@
-FROM ubuntu:16.04
-RUN apt-get update \
-    && apt-get install -y ruby-full=1:2.3.0+1 ruby-dev=1:2.3.0+1 build-essential=12.1ubuntu2 --no-install-recommends \
-    && gem install bundler --no-ri --no-rdoc \ 
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+FROM ruby:2.3-alpine
+RUN apk --no-cache add make=4.2.1-r2 gcc=6.4.0-r9 libc-dev=0.7.1-r0
 
 ENV APP_HOME /app
-RUN mkdir $APP_HOME
-
 WORKDIR $APP_HOME
+
 COPY Gemfile* $APP_HOME/
-RUN bundle install
+RUN bundle install && \
+  rm -rf /root/.bundle && \
+  apk --no-cache del make gcc libc-dev
 COPY . $APP_HOME
 
 ENV POST_SERVICE_HOST post

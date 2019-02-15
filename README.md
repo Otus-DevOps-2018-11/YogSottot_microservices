@@ -637,27 +637,27 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 - Проверен текущий размер ```docker images```
 
-<details><summary>размеры</summary><p>
+  <details><summary>размеры</summary><p>
 
-  ```bash
+    ```bash
 
-  >docker images
-  REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-  yogsottot/ui        1.0                 a5d1712293ce        About an hour ago   767MB
-  yogsottot/comment   1.0                 6f09813109a0        About an hour ago   765MB
-  yogsottot/post      1.0                 8d1048ab658c        About an hour ago   198MB
-  <none>              <none>              72aba88ff33d        About an hour ago   88.6MB
-  <none>              <none>              4d85cb9b8aeb        About an hour ago   257MB
-  <none>              <none>              f13ada26a87e        About an hour ago   257MB
-  <none>              <none>              745ef9e135eb        About an hour ago   88.6MB
-  <none>              <none>              a58bdd4d0f43        2 hours ago         88.6MB
-  mongo               latest              0da05d84b1fe        9 days ago          394MB
-  ruby                2.2                 6c8e6f9667b2        9 months ago        715MB
-  python              3.6.0-alpine        cb178ebbf0f2        23 months ago       88.6MB
-  
-  ```
+    >docker images
+    REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+    yogsottot/ui        1.0                 a5d1712293ce        About an hour ago   767MB
+    yogsottot/comment   1.0                 6f09813109a0        About an hour ago   765MB
+    yogsottot/post      1.0                 8d1048ab658c        About an hour ago   198MB
+    <none>              <none>              72aba88ff33d        About an hour ago   88.6MB
+    <none>              <none>              4d85cb9b8aeb        About an hour ago   257MB
+    <none>              <none>              f13ada26a87e        About an hour ago   257MB
+    <none>              <none>              745ef9e135eb        About an hour ago   88.6MB
+    <none>              <none>              a58bdd4d0f43        2 hours ago         88.6MB
+    mongo               latest              0da05d84b1fe        9 days ago          394MB
+    ruby                2.2                 6c8e6f9667b2        9 months ago        715MB
+    python              3.6.0-alpine        cb178ebbf0f2        23 months ago       88.6MB
 
-  </p></details>
+    ```
+
+    </p></details>
 
 - Изменён и собран новый образ ui ```docker build -t yogsottot/ui:2.0 ./ui```
 
@@ -687,15 +687,37 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 #### Задания со ⭐  
 
-- 
+- Собраны образы ui-2.2 / comment-1.5 на основе Alpine Linux  
 
-<details><summary>Спойлер</summary><p>
+  <details><summary>новый размер</summary><p>
 
-```bash
+  ```bash
 
-```
+  >docker images
+  yogsottot/ui        2.2                 d6df5c580d72        4 seconds ago        208MB
+  yogsottot/ui        2.0                 7a08f0564a4b        3 hours ago          398MB
+  yogsottot/ui        1.0                 a5d1712293ce        4 hours ago          767MB
+  yogsottot/comment   1.5                 6cc1d265f29b        6 minutes ago        206MB
+  yogsottot/comment   1.0                 6f09813109a0        4 hours ago          765MB
+  
+  ```
 
-</p></details>
+  </p></details>
+
+- Добавлены файлы .dockerignore  
+- Добавил удаление pip cache ```rm -r /root/.cache``` в ```post-py``` и удаление сборочных зависимостей (gcc musl). Снижен размер образа на 92 Мб.
+  
+  <details><summary>новый размер /post</summary><p>
+
+  ```bash
+
+  >docker images
+  yogsottot/post      1.5                 e58d479f8fdd        About a minute ago  106MB
+  yogsottot/post      1.0                 8d1048ab658c        3 hours ago         198MB
+
+  ```
+
+  </p></details>
 
 ### Работа с volume  
 
@@ -710,11 +732,11 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   docker run -d --network=reddit \
   --network-alias=post_db --network-alias=comment_db -v reddit_db:/data/db mongo:latest
   docker run -d --network=reddit \
-  --network-alias=post yogsottot/post:1.0
+  --network-alias=post yogsottot/post:1.5
   docker run -d --network=reddit \
-  --network-alias=comment yogsottot/comment:1.0
+  --network-alias=comment yogsottot/comment:1.5
   docker run -d --network=reddit \
-  -p 9292:9292 yogsottot/ui:2.0
+  -p 9292:9292 yogsottot/ui:2.1
 
   ```
 
