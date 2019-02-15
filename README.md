@@ -689,7 +689,6 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 - 
 
-
 <details><summary>Спойлер</summary><p>
 
 ```bash
@@ -697,3 +696,34 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 ```
 
 </p></details>
+
+### Работа с volume  
+
+- Создадан Docker volume: ```docker volume create reddit_db```  
+- Подключен к контейнеру с MongoDB  ```-v reddit_db:/data/db```  
+- Запущено приложение, создано сообщение.
+
+  <details><summary>Команды запуска</summary><p>
+
+  ```bash
+
+  docker run -d --network=reddit \
+  --network-alias=post_db --network-alias=comment_db -v reddit_db:/data/db mongo:latest
+  docker run -d --network=reddit \
+  --network-alias=post yogsottot/post:1.0
+  docker run -d --network=reddit \
+  --network-alias=comment yogsottot/comment:1.0
+  docker run -d --network=reddit \
+  -p 9292:9292 yogsottot/ui:2.0
+
+  ```
+
+  </p></details>
+
+- Перезапущено приложение. Проверено что сообщение осталось на месте.  
+  
+  <details><summary>Тест</summary><p>
+
+  ![reddit](https://i.imgur.com/TxbhKE9.png)
+
+  </p></details>
