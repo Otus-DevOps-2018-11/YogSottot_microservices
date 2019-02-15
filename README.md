@@ -10,7 +10,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 - Запущен ```docker run hello-world```  
 - Запущен ```docker run -it ubuntu:16.04 /bin/bash``` несколько раз с созданием файл в одном из контейнеров  
 - Найден старый контейнер ```docker ps -a```
-- Подключился к старому контейнеру ```docker start 4c47507d586b && docker attach 4c47507d586b``` 
+- Подключился к старому контейнеру ```docker start 4c47507d586b && docker attach 4c47507d586b```  
 - Создал образ на основе этого контейнера ```docker commit 4c47507d586b yogsottot/ubuntu-tmp-file```
 - Сохранил вывод команды ```docker images``` в файл ```docker-monolith/docker-1.log```  
 
@@ -30,6 +30,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 </p></details>
 
 ## ДЗ №13  
+
+<details><summary>Спойлер</summary><p>
 
 - Создан новый проект в gce ```gcloud projects create docker-231609 --name docker``` и выбран по умолчанию ```gcloud config set project docker-231609```  
 - Экспортирована переменная с id проекта ```export GOOGLE_PROJECT=docker-231609```
@@ -153,7 +155,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   - изучены логи контейнера ```docker logs reddit -f```
 
     <details><summary>Логи контейнера</summary><p>
-  
+
     ```bash
   
     >docker logs reddit -f
@@ -383,14 +385,14 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
     >docker run --name reddit -d -p 9292:9292 yogsottot/otus-reddit:1.02
     d2981256e51c6b2dd96c768013c7b2c7d81b97bcc2a6cf1ba5e150c49b7ecc12
-    [neko:~/IdeaProjects] $ 
+    [neko:~/IdeaProjects] $
     >docker exec -it reddit bash
     root@d2981256e51c:/# mkdir /test1234
     root@d2981256e51c:/# touch /test1234/testfile
     root@d2981256e51c:/# rmdir /opt
     root@d2981256e51c:/# exit
     exit
-    [neko:~/IdeaProjects] 19s $ 
+    [neko:~/IdeaProjects] 19s $
     >docker diff reddit
     C /var
     C /var/lib
@@ -427,7 +429,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
     >docker stop reddit && docker rm reddit
     reddit
     reddit
-    [neko:~/IdeaProjects] 11s $ 
+    [neko:~/IdeaProjects] 11s $
     >docker run --name reddit --rm -it yogsottot/otus-reddit:1.02 bash
     root@0baad30581f4:/# ls /
     bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  reddit  root  run  sbin  srv  start.sh  sys  tmp  usr  var
@@ -447,10 +449,10 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
   ```bash
 
-  >packer.io validate -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json 
+  >packer.io validate -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json
   Template validated successfully.
-  [neko:~/IdeaProjects/YogSottot_microservices] $ 
-  >packer.io build -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json         
+  [neko:~/IdeaProjects/YogSottot_microservices] $
+  >packer.io build -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json
   googlecompute output will be in this color.
   
   ==> googlecompute: Checking image does not exist...
@@ -539,3 +541,159 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ```
 
   </p></details>
+
+</p></details>
+
+## ДЗ №14. Docker образы. Микросервисы  
+
+- Скачан архив reddit-microservices и добавлены докерфайлы. Учтены замечания hadolint.
+- Запущена сборка контейнеров.  
+  ```docker build -t yogsottot/post:1.0 ./post-py```  
+
+  <details><summary>сборка</summary><p>
+
+  ```bash
+
+   unable to execute 'gcc': No such file or directory
+   error: command 'gcc' failed with exit status 1
+
+  ```
+
+  Добавил установку gcc в dockerfile
+
+  ```bash
+
+  Successfully built 8d1048ab658c
+  Successfully tagged yogsottot/post:1.0
+
+  ```
+
+  </p></details>
+
+  ```docker build -t yogsottot/comment:1.0 ./comment```  
+  ```docker build -t yogsottot/ui:1.0 ./ui```  
+
+- Создадна специальная сеть для приложения ```docker network create reddit```  
+- Запущены контейнеры  
+  
+  <details><summary>Команды запуска</summary><p>
+
+  ```bash
+
+  docker run -d --network=reddit \
+  --network-alias=post_db --network-alias=comment_db mongo:latest
+  docker run -d --network=reddit \
+  --network-alias=post yogsottot/post:1.0
+  docker run -d --network=reddit \
+  --network-alias=comment yogsottot/comment:1.0
+  docker run -d --network=reddit \
+  -p 9292:9292 yogsottot/ui:1.0
+
+  ```
+
+  </p></details>
+
+- Проверена работа приложения  
+
+  <details><summary>Тест</summary><p>
+
+  ![reddit](https://i.imgur.com/EJGFtbF.png)
+
+  </p></details>
+
+### Задание со ⭐  
+
+- Остановлены контейнеры: ```docker kill $(docker ps -q)```
+- Запущены контейнеры с другими сетевыми алиасами
+- При запуске контейнеров (docker run) заданы переменные окружения соответствующие новым сетевым
+алиасам, не пересоздавая образ  
+  
+  <details><summary>Запуск</summary><p>
+
+  ```bash
+
+  docker run -d --network=reddit \
+  --network-alias=post_db_test1 --network-alias=comment_db_test1 mongo:latest
+  docker run -d --env "POST_DATABASE_HOST=post_db_test1" --network=reddit \
+  --network-alias=post_test1 yogsottot/post:1.0
+  docker run -d --env "COMMENT_DATABASE_HOST=comment_db_test1" --network=reddit \
+  --network-alias=comment_test1 yogsottot/comment:1.0
+  docker run -d --env "POST_SERVICE_HOST=post_test1" --env "COMMENT_SERVICE_HOST=comment_test1" --network=reddit \
+  -p 9292:9292 yogsottot/ui:1.0
+
+  ```
+
+  </p></details>
+
+- Проверена работоспособность сервиса  
+
+  <details><summary>Тест</summary><p>
+
+  ![reddit](https://i.imgur.com/343Kvi9.png)
+
+  </p></details>
+
+### Уменьшение образов  
+
+- Проверен текущий размер ```docker images```
+
+<details><summary>размеры</summary><p>
+
+  ```bash
+
+  >docker images
+  REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+  yogsottot/ui        1.0                 a5d1712293ce        About an hour ago   767MB
+  yogsottot/comment   1.0                 6f09813109a0        About an hour ago   765MB
+  yogsottot/post      1.0                 8d1048ab658c        About an hour ago   198MB
+  <none>              <none>              72aba88ff33d        About an hour ago   88.6MB
+  <none>              <none>              4d85cb9b8aeb        About an hour ago   257MB
+  <none>              <none>              f13ada26a87e        About an hour ago   257MB
+  <none>              <none>              745ef9e135eb        About an hour ago   88.6MB
+  <none>              <none>              a58bdd4d0f43        2 hours ago         88.6MB
+  mongo               latest              0da05d84b1fe        9 days ago          394MB
+  ruby                2.2                 6c8e6f9667b2        9 months ago        715MB
+  python              3.6.0-alpine        cb178ebbf0f2        23 months ago       88.6MB
+  
+  ```
+
+  </p></details>
+
+- Изменён и собран новый образ ui ```docker build -t yogsottot/ui:2.0 ./ui```
+
+  <details><summary>новый размер</summary><p>
+
+  ```bash
+
+  >docker images
+  REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+  yogsottot/ui        2.0                 7a08f0564a4b        3 seconds ago       398MB
+  yogsottot/ui        1.0                 a5d1712293ce        About an hour ago   767MB
+  yogsottot/comment   1.0                 6f09813109a0        About an hour ago   765MB
+  yogsottot/post      1.0                 8d1048ab658c        About an hour ago   198MB
+  <none>              <none>              72aba88ff33d        About an hour ago   88.6MB
+  <none>              <none>              4d85cb9b8aeb        2 hours ago         257MB
+  <none>              <none>              f13ada26a87e        2 hours ago         257MB
+  <none>              <none>              745ef9e135eb        2 hours ago         88.6MB
+  <none>              <none>              a58bdd4d0f43        2 hours ago         88.6MB
+  mongo               latest              0da05d84b1fe        9 days ago          394MB
+  ubuntu              16.04               7e87e2b3bf7a        3 weeks ago         117MB
+  ruby                2.2                 6c8e6f9667b2        9 months ago        715MB
+  python              3.6.0-alpine        cb178ebbf0f2        23 months ago       88.6MB
+
+  ```
+
+  </p></details>
+
+#### Задания со ⭐  
+
+- 
+
+
+<details><summary>Спойлер</summary><p>
+
+```bash
+
+```
+
+</p></details>
