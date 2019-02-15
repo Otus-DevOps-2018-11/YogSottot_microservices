@@ -724,7 +724,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ### Работа с volume  
 
-- Создадан Docker volume: ```docker volume create reddit_db```  
+- Создан Docker volume: ```docker volume create reddit_db```  
 - Подключен к контейнеру с MongoDB  ```-v reddit_db:/data/db```  
 - Запущено приложение, создано сообщение.
 
