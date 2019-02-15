@@ -688,16 +688,18 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 #### Задания со ⭐  
 
-- Собраны образы ui-2.2 / comment-1.5 на основе Alpine Linux  
+- Собраны образы ui-2.3 / comment-1.6 на основе Alpine Linux  
 
   <details><summary>новый размер</summary><p>
 
   ```bash
 
   >docker images
+  yogsottot/ui        2.3                 60e670a09925        6 seconds ago        42MB
   yogsottot/ui        2.2                 d6df5c580d72        4 seconds ago        208MB
   yogsottot/ui        2.0                 7a08f0564a4b        3 hours ago          398MB
   yogsottot/ui        1.0                 a5d1712293ce        4 hours ago          767MB
+  yogsottot/comment   1.6                 a132beb50a01        7 seconds ago        39.5MB
   yogsottot/comment   1.5                 6cc1d265f29b        6 minutes ago        206MB
   yogsottot/comment   1.0                 6f09813109a0        4 hours ago          765MB
   
@@ -735,9 +737,9 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   docker run -d --network=reddit \
   --network-alias=post yogsottot/post:1.5
   docker run -d --network=reddit \
-  --network-alias=comment yogsottot/comment:1.5
+  --network-alias=comment yogsottot/comment:1.6
   docker run -d --network=reddit \
-  -p 9292:9292 yogsottot/ui:2.1
+  -p 9292:9292 yogsottot/ui:2.3
 
   ```
 

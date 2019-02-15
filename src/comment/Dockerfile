@@ -1,11 +1,13 @@
-FROM ruby:2.3-alpine as builder
-RUN apk --no-cache add make=4.2.1-r2 gcc=6.4.0-r9 libc-dev=0.7.1-r0
-
+FROM alpine:3.9 as builder
 ENV APP_HOME /app
 WORKDIR $APP_HOME
 
 COPY Gemfile* $APP_HOME/
-RUN bundle install && \
+
+ENV RUBY_VERSION 2.5.3-r1
+
+RUN apk --no-cache add ruby="$RUBY_VERSION" ruby-bigdecimal="$RUBY_VERSION" ruby-bundler=1.17.1-r0 ruby-dev="$RUBY_VERSION" ruby-json="$RUBY_VERSION" make=4.2.1-r2 gcc=8.2.0-r2 libc-dev=0.7.1-r0 && \
+  bundle install && \
   rm -rf /root/.bundle && \
   apk --no-cache del make gcc libc-dev
 COPY . $APP_HOME
