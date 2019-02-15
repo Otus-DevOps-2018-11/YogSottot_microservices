@@ -175,7 +175,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
     ```
 
-  </p></details>
+    </p></details>
 
   - зашёл в выполняемый контейнер ```docker exec -it reddit bash```
   - посмотрел список процессов  ```ps auxf```
@@ -444,7 +444,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ```cd terraform/stage && terraform get && terraform init && terraform apply -auto-approve=true```  
 - Добавлено несколько плейбуков Ansible (```site_dynamic.yml```, ```docker_dynamic.yml```, ```deploy_dynamic.yml```) с использованием динамического инвентори для установки докера и запуска там образа приложения. Используется скрипт ```gce_googleapiclient.py```. Отличается от ```gce.py``` тем, что использует для авторизации тот же механизм, что и утилиты gcloud. Нет необходимости скачивать service_account.json
 - Добавлен шаблон пакера, который делает образ с уже установленным Docker с помощью плейбука ```packer_docker.yml```  
-  ```packer.io build -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json```  
+  ```packer.io build -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json``` 
+ 
   <details><summary>Создание образа</summary><p>
 
   ```bash
