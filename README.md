@@ -695,11 +695,11 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ```bash
 
   >docker images
-  yogsottot/ui        2.3                 60e670a09925        6 seconds ago        42MB
+  yogsottot/ui        2.3                 60e670a09925        6 seconds ago        38.6MB
   yogsottot/ui        2.2                 d6df5c580d72        4 seconds ago        208MB
   yogsottot/ui        2.0                 7a08f0564a4b        3 hours ago          398MB
   yogsottot/ui        1.0                 a5d1712293ce        4 hours ago          767MB
-  yogsottot/comment   1.6                 a132beb50a01        7 seconds ago        39.5MB
+  yogsottot/comment   1.6                 a132beb50a01        7 seconds ago        36.2MB
   yogsottot/comment   1.5                 6cc1d265f29b        6 minutes ago        206MB
   yogsottot/comment   1.0                 6f09813109a0        4 hours ago          765MB
   
