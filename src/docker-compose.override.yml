@@ -1,0 +1,21 @@
+---
+version: '3.7'
+services:
+  ui:
+   entrypoint:
+    - puma
+    - --debug
+    - -w 2
+   volumes:
+    - /home/docker-user/ui:/app
+  comment:
+   entrypoint:
+    - puma
+    - --debug
+    - -w 2
+   volumes:
+    - /home/docker-user/comment:/app
+  post:
+   volumes:
+    - /home/docker-user/post-py:/app
+    
