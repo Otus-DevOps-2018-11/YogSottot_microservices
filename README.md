@@ -385,14 +385,14 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
     >docker run --name reddit -d -p 9292:9292 yogsottot/otus-reddit:1.02
     d2981256e51c6b2dd96c768013c7b2c7d81b97bcc2a6cf1ba5e150c49b7ecc12
-    [neko:~/IdeaProjects] $
+
     >docker exec -it reddit bash
     root@d2981256e51c:/# mkdir /test1234
     root@d2981256e51c:/# touch /test1234/testfile
     root@d2981256e51c:/# rmdir /opt
     root@d2981256e51c:/# exit
     exit
-    [neko:~/IdeaProjects] 19s $
+
     >docker diff reddit
     C /var
     C /var/lib
@@ -429,7 +429,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
     >docker stop reddit && docker rm reddit
     reddit
     reddit
-    [neko:~/IdeaProjects] 11s $
+
     >docker run --name reddit --rm -it yogsottot/otus-reddit:1.02 bash
     root@0baad30581f4:/# ls /
     bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  reddit  root  run  sbin  srv  start.sh  sys  tmp  usr  var
@@ -444,18 +444,18 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ```cd terraform/stage && terraform get && terraform init && terraform apply -auto-approve=true```  
 - Добавлено несколько плейбуков Ansible (```site_dynamic.yml```, ```docker_dynamic.yml```, ```deploy_dynamic.yml```) с использованием динамического инвентори для установки докера и запуска там образа приложения. Используется скрипт ```gce_googleapiclient.py```. Отличается от ```gce.py``` тем, что использует для авторизации тот же механизм, что и утилиты gcloud. Нет необходимости скачивать service_account.json
 - Добавлен шаблон пакера, который делает образ с уже установленным Docker с помощью плейбука ```packer_docker.yml```  
-  ```packer.io build -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json``` 
- 
+  ```packer.io build -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json```
+
   <details><summary>Создание образа</summary><p>
 
   ```bash
 
   >packer.io validate -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json
   Template validated successfully.
-  [neko:~/IdeaProjects/YogSottot_microservices] $
+
   >packer.io build -var-file=docker-monolith/infra/packer/variables.json docker-monolith/infra/packer/docker.json
   googlecompute output will be in this color.
-  
+
   ==> googlecompute: Checking image does not exist...
   ==> googlecompute: Creating temporary SSH key for instance...
   ==> googlecompute: Using image: ubuntu-1604-xenial-v20190212
@@ -546,6 +546,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 </p></details>
 
 ## ДЗ №14. Docker образы. Микросервисы  
+
+<details><summary>Сойлер</summary><p>
 
 - Скачан архив reddit-microservices и добавлены докерфайлы. Учтены замечания hadolint.
 - Запущена сборка контейнеров.  
@@ -752,3 +754,450 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ![reddit](https://i.imgur.com/TxbhKE9.png)
 
   </p></details>
+
+</p></details>
+
+## ДЗ №15. Сетевое взаимодействие Docker контейнеров. Docker Compose. Тестирование образов  
+
+### Сетевые драйверы  
+
+#### None network driver  
+
+- Выполнен ```ifconfig``` в контейнере ```joffotron/docker-net-tools```
+
+  <details><summary>Результат</summary><p>
+
+  ```bash
+
+  >docker run -ti --rm --network none joffotron/docker-net-tools -c ifconfig
+  Unable to find image 'joffotron/docker-net-tools:latest' locally
+  latest: Pulling from joffotron/docker-net-tools
+  3690ec4760f9: Pull complete
+  0905b79e95dc: Pull complete
+  Digest: sha256:5752abdc4351a75e9daec681c1a6babfec03b317b273fc56f953592e6218d5b5
+  Status: Downloaded newer image for joffotron/docker-net-tools:latest
+  lo        Link encap:Local Loopback  
+            inet addr:127.0.0.1  Mask:255.0.0.0
+            UP LOOPBACK RUNNING  MTU:65536  Metric:1
+            RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+            TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+            collisions:0 txqueuelen:1000
+            RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+  ```
+
+  </p></details>
+
+#### Host network driver  
+
+- Выполнен ```ifconfig``` в контейнере ```joffotron/docker-net-tools```
+
+  <details><summary>Результат</summary><p>
+
+  ```bash
+
+  >docker run -ti --rm --network host joffotron/docker-net-tools -c ifconfig
+  docker0   Link encap:Ethernet  HWaddr 02:42:43:BE:92:1B  
+            inet addr:172.17.0.1  Bcast:172.17.255.255  Mask:255.255.0.0
+            UP BROADCAST MULTICAST  MTU:1500  Metric:1
+            RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+            TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+            collisions:0 txqueuelen:0
+            RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+  
+  ens4      Link encap:Ethernet  HWaddr 42:01:0A:A6:00:0F  
+            inet addr:10.166.0.15  Bcast:10.166.0.15  Mask:255.255.255.255
+            inet6 addr: fe80::4001:aff:fea6:f%32511/64 Scope:Link
+            UP BROADCAST RUNNING MULTICAST  MTU:1460  Metric:1
+            RX packets:5735 errors:0 dropped:0 overruns:0 frame:0
+            TX packets:4861 errors:0 dropped:0 overruns:0 carrier:0
+            collisions:0 txqueuelen:1000
+            RX bytes:82716762 (78.8 MiB)  TX bytes:459695 (448.9 KiB)
+  
+  lo        Link encap:Local Loopback  
+            inet addr:127.0.0.1  Mask:255.0.0.0
+            inet6 addr: ::1%32511/128 Scope:Host
+            UP LOOPBACK RUNNING  MTU:65536  Metric:1
+            RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+            TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+            collisions:0 txqueuelen:1000
+            RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+  ```
+
+  </p></details>
+
+- Выполнен ```ifconfig``` непосредственно на хосте. Результаты одинаковы, так как используется сеть хоста.
+
+  <details><summary>Результат</summary><p>
+
+  ```bash
+
+  >docker-machine ssh docker-host ifconfig
+  docker0   Link encap:Ethernet  HWaddr 02:42:43:be:92:1b  
+            inet addr:172.17.0.1  Bcast:172.17.255.255  Mask:255.255.0.0
+            UP BROADCAST MULTICAST  MTU:1500  Metric:1
+            RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+            TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+            collisions:0 txqueuelen:0 
+            RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+  
+  ens4      Link encap:Ethernet  HWaddr 42:01:0a:a6:00:0f  
+            inet addr:10.166.0.15  Bcast:10.166.0.15  Mask:255.255.255.255
+            inet6 addr: fe80::4001:aff:fea6:f/64 Scope:Link
+            UP BROADCAST RUNNING MULTICAST  MTU:1460  Metric:1
+            RX packets:5789 errors:0 dropped:0 overruns:0 frame:0
+            TX packets:4912 errors:0 dropped:0 overruns:0 carrier:0
+            collisions:0 txqueuelen:1000 
+            RX bytes:82726568 (82.7 MB)  TX bytes:468659 (468.6 KB)
+  
+  lo        Link encap:Local Loopback  
+            inet addr:127.0.0.1  Mask:255.0.0.0
+            inet6 addr: ::1/128 Scope:Host
+            UP LOOPBACK RUNNING  MTU:65536  Metric:1
+            RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+            TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+            collisions:0 txqueuelen:1000 
+            RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+
+  ```
+
+  </p></details>
+
+- Запущен несколько раз (2-4) ```docker run --network host -d nginx```. В ```docker ps``` видно, что остался запущен только один контейнер. Это происходит из-за того, что используется один интерфейс и порт уже занят, остальные контейнеры падают с ошибкой.  
+- Выполнена команда ```docker-machine ssh docker-host 'sudo ln -s /var/run/docker/netns /var/run/netns'```
+- Теперь можно просматривать существующие в данный момент ```net-namespaces``` с помощью команды: ```docker-machine ssh docker-host 'sudo ip netns'```  
+- Повторены запуски контейнеров с использованием драйверов ```none``` и ```host``` и просмотрено, как меняется список namespace-ов
+
+  <details><summary>none</summary><p>
+
+  ```bash
+
+  >docker run -ti --rm --network none joffotron/docker-net-tools -c ifconfig
+  lo        Link encap:Local Loopback  
+            inet addr:127.0.0.1  Mask:255.0.0.0
+            UP LOOPBACK RUNNING  MTU:65536  Metric:1
+            RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+            TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+            collisions:0 txqueuelen:1000
+            RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+  >docker-machine ssh docker-host 'sudo ip netns'
+  RTNETLINK answers: Invalid argument
+  RTNETLINK answers: Invalid argument
+  82c6b5ac974e
+  default
+
+  ```
+
+  </p></details>
+
+  <details><summary>host</summary><p>
+
+  ```bash
+
+  sudo docker run --network host -d nginx ; sudo ip netns
+  c9c659c97ac73c81d70abf371b6d75cf207d8d6d83c2fdd967ac4794f1532f2a
+  default
+  docker-user@docker-host:~$ sudo docker run --network host -d nginx ; sudo ip netns
+  9f7130c39ea36eab06456cef23facc0cbb7fe10d7dc37ce4553a8a1f24a19d57
+  default
+  docker-user@docker-host:~$ sudo docker run --network host -d nginx ; sudo ip netns
+  c5ed6a16b5441dd53512d78b3de97b8be5e62a0d05d2ede1087f03d2b6796393
+  default
+  docker-user@docker-host:~$ sudo docker run --network host -d nginx ; sudo ip netns
+  ad9c91b904c668693d6c73fc723f28144d0bd4dc9778ee8bba45b0270bb6fc4f
+  default
+
+  ```
+
+  </p></details>
+
+#### Bridge network driver  
+
+- Создана bridge-сеть в docker ```docker network create reddit --driver bridge```
+- Созданый образы и запущены контейнеры приложения
+
+  <details><summary>Результат</summary><p>
+
+  ```bash
+
+  >docker run -d --network=reddit mongo:latest
+  275bbb836d9441e124db82db384c93c9dc530ee698e896fa84fbb5e6d48512a0
+  
+  >docker run -d --network=reddit yogsottot/post:1.0
+  b12dc50614f532eae9e9557bd3fa7741b0cc690165287d4d7936a12dc0091243
+  
+  >docker run -d --network=reddit yogsottot/comment:1.0
+  326ce4126f0d8557aae2ad8d826ef796e5ad9492b7d746fc0a70ba5a00eabc0d
+  
+  >docker run -d --network=reddit -p 9292:9292 yogsottot/ui:1.0
+  1c87de96124e9e8a2a9e9eec5f79be0070d0144a77893f9744d4306f539fc3ce
+
+  ```
+
+  </p></details>
+
+- Проверено, что приложение функционирует некорректно. Созданы новые контейнеры с присвоением сетевых псевдонимов  
+
+  <details><summary>Результат</summary><p>
+
+  ```bash
+
+  >docker kill $(docker ps -q)
+  1c87de96124e
+  326ce4126f0d
+  b12dc50614f5
+  275bbb836d94
+  a1bc8daf4eb0
+  
+  >docker run -d --network=reddit --network-alias=post_db --network-alias=comment_db mongo:latest
+  2d833cd504d45d8ab6631a2edf1364504b5a34df7c5eea08444f8450359f65cb
+  
+  >docker run -d --network=reddit --network-alias=post yogsottot/post:1.0
+  1794db901b524405f7125da6c03cbda74ad2b50bb5300fc07e9c0321a1a91ca9
+  
+  >docker run -d --network=reddit --network-alias=comment yogsottot/comment:1.0
+  40f52ef941d24d16e73ab33b067c0e96b3efc00689114031d87ca8fc08ee9d08
+  
+  >docker run -d --network=reddit -p 9292:9292 yogsottot/ui:1.0
+  274842f11cd093432235b0f8a20e29223556d5f91d7609ac077a4b944be456fd
+
+  ```
+
+  </p></details>
+
+- Приложение функционирует корректно  
+- Запущен проект в 2-х bridge сетях. Так, чтобы сервис ui не имел доступа к базе данных  
+  - Созданы docker-сети
+
+    ```bash
+
+    > docker network create back_net --subnet=10.0.2.0/24
+    > docker network create front_net --subnet=10.0.1.0/24
+  
+    ```
+
+  - Запущены контейнеры
+
+    ```bash
+
+    docker run -d --network=front_net -p 9292:9292 --name ui yogsottot/ui:1.0
+    docker run -d --network=back_net --name comment yogsottot/comment:1.0
+    docker run -d --network=back_net --name post yogsottot/post:1.0
+    docker run -d --network=back_net --name mongo_db --network-alias=post_db --network-alias=comment_db mongo:latest
+
+    ```
+
+- Убедились, что приложени работает некорректно, так как Docker при инициализации контейнера может подключить к нему только 1
+сеть  
+- Подключены дополнительные сети для контейнеров post и comment  
+
+  ```bash
+
+  >docker network connect front_net post
+  >docker network connect front_net comment
+
+  ```
+
+- Приложение работает корректно  
+- Произведена установка пакета bridge-utils на docker-host
+
+  ```bash
+
+  docker-machine ssh docker-host
+  sudo apt-get update && sudo apt-get install bridge-utils
+
+  ```
+
+- Выполнена команда ```docker network ls``` и найдены ID сетей, созданных в рамках проекта
+
+  <details><summary>Результат</summary><p>
+
+  ```bash
+
+  sudo docker network ls
+  NETWORK ID          NAME                DRIVER              SCOPE
+  0736038172aa        back_net            bridge              local
+  0e587934b032        bridge              bridge              local
+  75f4f9d59467        front_net           bridge              local
+  8b2a6e3bd204        host                host                local
+  298c0549376b        none                null                local
+  77aa870d23be        reddit              bridge              local
+
+  ```
+
+  </p></details>
+
+- Выполнено ```ifconfig | grep br``` и найдены bridge-интерфейсы для каждой из сетей  
+
+  <details><summary>Результат</summary><p>
+
+  ```bash
+
+  ifconfig | grep br
+  br-0736038172aa Link encap:Ethernet  HWaddr 02:42:62:72:dd:81  
+  br-75f4f9d59467 Link encap:Ethernet  HWaddr 02:42:c1:01:5c:5b  
+  br-77aa870d23be Link encap:Ethernet  HWaddr 02:42:21:71:68:ef
+
+  ```
+
+  </p></details>
+
+- Просмотрена информация о каждом интерфейсе
+
+  <details><summary>Результат</summary><p>
+
+  ```bash
+
+  ~$ brctl show br-0736038172aa
+  bridge name     bridge id               STP enabled     interfaces
+  br-0736038172aa         8000.02426272dd81       no              veth70b6207
+                                                          veth74deabe
+                                                          vethee70efc
+  ~$ brctl show br-75f4f9d59467
+  bridge name     bridge id               STP enabled     interfaces
+  br-75f4f9d59467         8000.0242c1015c5b       no              veth1a58b06
+                                                          veth73dd2ad
+                                                          veth9b151d5
+  ~$ brctl show br-77aa870d23be
+  bridge name     bridge id               STP enabled     interfaces
+  br-77aa870d23be         8000.0242217168ef       no
+
+  ```
+
+  </p></details>
+
+- Выполнено ```sudo iptables -nL -t nat```
+
+  <details><summary>Результат</summary><p>
+
+  ```bash
+
+  sudo iptables -v -nL -t nat
+  Chain PREROUTING (policy ACCEPT 2138 packets, 127K bytes)
+   pkts bytes target     prot opt in     out     source               destination
+    115  9826 DOCKER     all  --  *      *       0.0.0.0/0            0.0.0.0/0            ADDRTYPE match dst-type LOCAL
+  
+  Chain INPUT (policy ACCEPT 12 packets, 680 bytes)
+   pkts bytes target     prot opt in     out     source               destination
+  
+  Chain OUTPUT (policy ACCEPT 68 packets, 4689 bytes)
+   pkts bytes target     prot opt in     out     source               destination
+      0     0 DOCKER     all  --  *      *       0.0.0.0/0           !127.0.0.0/8          ADDRTYPE match dst-type LOCAL
+  
+  Chain POSTROUTING (policy ACCEPT 2012 packets, 121K bytes)
+   pkts bytes target     prot opt in     out     source               destination
+    180  9270 MASQUERADE  all  --  *      !br-75f4f9d59467  10.0.1.0/24          0.0.0.0/0
+      4   218 MASQUERADE  all  --  *      !br-0736038172aa  10.0.2.0/24          0.0.0.0/0
+   3659  203K MASQUERADE  all  --  *      !br-77aa870d23be  172.18.0.0/16        0.0.0.0/0
+    259 15707 MASQUERADE  all  --  *      !docker0  172.17.0.0/16        0.0.0.0/0
+      0     0 MASQUERADE  tcp  --  *      *       10.0.1.2             10.0.1.2             tcp dpt:9292
+  
+  Chain DOCKER (2 references)
+   pkts bytes target     prot opt in     out     source               destination
+      0     0 RETURN     all  --  br-75f4f9d59467 *       0.0.0.0/0            0.0.0.0/0
+      0     0 RETURN     all  --  br-0736038172aa *       0.0.0.0/0            0.0.0.0/0
+      0     0 RETURN     all  --  br-77aa870d23be *       0.0.0.0/0            0.0.0.0/0
+      0     0 RETURN     all  --  docker0 *       0.0.0.0/0            0.0.0.0/0
+      2   120 DNAT       tcp  --  !br-75f4f9d59467 *       0.0.0.0/0            0.0.0.0/0            tcp dpt:9292 to:10.0.1.2:9292
+
+  ```
+
+  </p></details>
+
+- Выполенено ```ps ax | grep docker-proxy```. Проверено, что docker-proxy слушает порт 9292  
+
+  <details><summary>Результат</summary><p>
+
+  ```bash
+
+  docker-+ 20035  0.0  0.0  12944   940 pts/0    S+   10:42   0:00              \_ grep --color=auto docker-proxy
+  root     12987  0.0  0.0   8356  2896 ?        Sl   10:19   0:00  \_ /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 9292 -container-ip 10.0.1.2 -container-port 9292
+
+
+  ```
+
+  </p></details>
+
+### Docker-compose  
+
+- Добавлен файл docker-compose.yml
+- Собраны образы и запущены контейнеры с помощью ```docker-compose```. Проверено, что приложение работает.
+
+  <details><summary>Результат</summary><p>
+
+  ```bash
+
+  >export USERNAME=yogsottot
+  
+  >docker-compose up -d
+  Creating network "src_reddit" with the default driver
+  Creating volume "src_post_db" with default driver
+  Pulling post_db (mongo:3.2)...
+  3.2: Pulling from library/mongo
+  a92a4af0fb9c: Pull complete
+  74a2c7f3849e: Pull complete
+  927b52ab29bb: Pull complete
+  e941def14025: Pull complete
+  be6fce289e32: Pull complete
+  f6d82baac946: Pull complete
+  7c1a640b9ded: Pull complete
+  e8b2fc34c941: Pull complete
+  1fd822faa46a: Pull complete
+  61ba5f01559c: Pull complete
+  db344da27f9a: Pull complete
+  Digest: sha256:0463a91d8eff189747348c154507afc7aba045baa40e8d58d8a4c798e71001f3
+  Status: Downloaded newer image for mongo:3.2
+  Creating src_ui_1      ... done
+  Creating src_post_1    ... done
+  Creating src_post_db_1 ... done
+  Creating src_comment_1 ... done
+  
+  >docker-compose ps
+      Name                  Command             State           Ports
+  ----------------------------------------------------------------------------
+  src_comment_1   puma                          Up
+  src_post_1      python3 post_app.py           Up
+  src_post_db_1   docker-entrypoint.sh mongod   Up      27017/tcp
+  src_ui_1        puma                          Up      0.0.0.0:9292->9292/tcp
+
+  ```
+
+  </p></details>
+
+#### Задания для самостоятельной работы  
+
+- Изменён ```docker-compose``` под кейс с множеством сетей, сетевых алиасов
+- Параметризированы с помощью переменных окружений:
+  - порт публикации сервиса ui
+  - версии сервисов
+- Параметризованные параметры записаны в отдельный файл ```.env```  
+- Проверено, что без использования команд ```source``` и ```export``` ```docker-compose``` подхватывает переменные из этого файла  
+- Базовое имя проекта, по умолчанию, образуется на основе имени директории из которой производится запуск  
+  Способы изменения:
+  - запустить ```docker-compose up -d -p new_project_name```  
+  - задать в переменной окружения ```COMPOSE_PROJECT_NAME```  
+
+#### Задание со *  
+
+- Создан ```docker-compose.override.yml``` для reddit проекта, который позволяет
+  - Изменять код каждого из приложений, не выполняя сборку образа, с помощью монтирования директорий содержащих код в volume. Нужно копировать директории с кодом на docker-host.
+  - Запускать puma для руби приложений в дебаг режиме с двумя воркерами (флаги --debug и -w 2), с помощью параметра ```entrypoint```  
+
+    <details><summary>Результат</summary><p>
+
+    ```bash
+
+    >docker-compose ps
+         Name                  Command             State           Ports
+    -----------------------------------------------------------------------------
+    otus_comment_1   puma --debug -w 2             Up
+    otus_post_1      python3 post_app.py           Up
+    otus_post_db_1   docker-entrypoint.sh mongod   Up      27017/tcp
+    otus_ui_1        puma --debug -w 2             Up      0.0.0.0:9292->9292/tcp
+
+    ```
+
+    </p></details>
