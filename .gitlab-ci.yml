@@ -19,7 +19,7 @@ before_script:
 build_job:
   stage: build
   script:
-    - echo 'Building'
+    - docker build -t yogsottot/reddit:latest .
 
 test_unit_job:
   stage: test

@@ -1,0 +1,9 @@
+---
+# https://docs.docker.com/compose/compose-file/
+version: '3.3'
+services:
+  reddit:
+    build: .
+    image: gitlab/reddit:latest
+    ports:
+      - 9292:9292/tcp
