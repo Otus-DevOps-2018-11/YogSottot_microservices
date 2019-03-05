@@ -759,6 +759,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ## ДЗ №15. Сетевое взаимодействие Docker контейнеров. Docker Compose. Тестирование образов  
 
+<details><summary>Спойлер</summary><p>
+
 ### Сетевые драйверы  
 
 #### None network driver  
@@ -1201,3 +1203,80 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
     ```
 
     </p></details>
+
+</p></details>
+
+## ДЗ №16. Устройство Gitlab CI. Построение процесса непрерывной интеграции  
+
+- Создана вм
+
+  <details><summary>Команда для создания</summary><p>
+
+  ```bash
+
+  docker-machine create --driver google \
+  --google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts \
+  --google-machine-type n1-standard-1 \
+  --google-zone europe-north1-b \
+  --google-disk-size 60 \
+  --google-tags http-server,https-server \
+  gitlab
+
+  ```
+
+  </p></details>
+
+- На новом сервере созданы необходимые директории и запущен контейнер gitlab.  
+
+  <details><summary>Команда для создания</summary><p>
+
+  ```bash
+
+  mkdir -p /srv/gitlab/config /srv/gitlab/data /srv/gitlab/logs && \
+  cd /srv/gitlab/ && \
+  wget https://gist.githubusercontent.com/Nklya/c2ca40a128758e2dc2244beb09caebe1/raw/e9ba646b06a597734f8dfc0789aae79bc43a7242/docker-compose.yml
+  # добавить ip вместо <YOUR-VM-IP>
+  apt install docker-compose
+  docker-compose up -d
+
+  ```
+
+  </p></details>
+
+- Создана группа, проект и загружено содержимое репозиторя microservices  
+- Добавлен файл .gitlab-ci.yml  
+- Запущен и зарегистрирован gitlab-runner
+
+  <details><summary>Команда для создания</summary><p>
+
+  ```bash
+
+  docker run -d --name gitlab-runner --restart always \
+  -v /srv/gitlab-runner/config:/etc/gitlab-runner \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  gitlab/gitlab-runner:latest
+
+  ```
+
+  </p></details>
+
+- Добавлен исходный код reddit в репозиторий  
+
+  <details><summary>Процесс</summary><p>
+
+  ```bash
+
+  git clone https://github.com/express42/reddit.git && rm -rf ./reddit/.git
+  git add reddit/
+  git commit -m "Add reddit app"
+  git push gitlab gitlab-ci-1
+
+  ```
+
+  </p></details>
+
+- Добавлены тесты в gitlab-ci  
+- Добавлено dev окружение, результат виден в Opeations → Environments  
+- Добавлены stage и production окружения  
+- Добавлена директива, которая не позволяет выкатить на staging и production код,не помеченный с помощью тэга в git (only: - /^\d+\.\d+\.\d+/)  
+- Добавлен job, который определяет динамическое окружение для каждой ветки в репозитории, кроме ветки master
