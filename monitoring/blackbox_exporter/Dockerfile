@@ -7,8 +7,11 @@ RUN apk --no-cache --update add git curl make libc-dev gcc libgcc && \
     &&  git clone --depth 1 --branch v0.6.3 https://github.com/percona/mongodb_exporter.git . && \
     cd /go/src/github.com/percona/mongodb_exporter && make build
 
-FROM       busybox:1.30
+#FROM       alpine:3.7
+FROM       busybox:latest
 EXPOSE     9216
+#RUN apk add --no-cache ca-certificates
+#COPY --from=builder /go/src/github.com/percona/mongodb_exporter/mongodb_exporter /usr/local/bin/mongodb_exporter
 COPY --from=builder /go/src/github.com/percona/mongodb_exporter/mongodb_exporter /bin/mongodb_exporter
 
 ENTRYPOINT [ "mongodb_exporter", "-collect.database" ]

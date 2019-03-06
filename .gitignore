@@ -17,4 +17,4 @@ geerlingguy.docker/
 .pytest_cache
 __pycache__
 .venv
-/src/*/build_info.txt
+build_info.txt
