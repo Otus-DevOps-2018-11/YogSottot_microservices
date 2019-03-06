@@ -18,7 +18,3 @@ geerlingguy.docker/
 __pycache__
 .venv
 /src/*/build_info.txt
-# mongodb_exporter
-/monitoring/mongodb_exporter/
-!/monitoring/mongodb_exporter/Dockerfile
-!/monitoring/mongodb_exporter/Makefile
