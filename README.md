@@ -1299,3 +1299,18 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 ### Задание со*  
 
 - Добавлен в Prometheus мониторинг MongoDB с использованием [percona/mongodb_exporter](https://github.com/percona/mongodb_exporter/). Dockerfile в ```monitoring/mongodb_exporter```. Образ загружен в [docker registry](https://cloud.docker.com/u/yogsottot/repository/docker/yogsottot/mongodb_exporter)  
+- Добавлен blackbox exporter для проверки доступности сервисов по http  
+  Конфигурация для экспортера загружается на впс с помощью [docker-machine mount](https://docs.docker.com/machine/reference/mount/)
+
+  <details><summary>Процесс</summary><p>
+
+  ```bash
+  cd docker
+  docker-machine ssh prometheus mkdir blackbox_exporter
+  docker-machine mount prometheus:/home/docker-user/blackbox_exporter ../monitoring/blackbox_exporter/mount
+  # после завершения тетсов, отмонтировать
+  docker-machine mount -u prometheus:/home/docker-user/blackbox_exporter ../monitoring/blackbox_exporter/mount
+
+  ```
+
+  </p></details>

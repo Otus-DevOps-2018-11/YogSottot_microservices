@@ -1,0 +1,13 @@
+---
+modules:
+  http_2xx:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes:
+        - 200
+        - 404
+  icmp:
+    prober: icmp
+    icmp:
+      preferred_ip_protocol: "ip4"

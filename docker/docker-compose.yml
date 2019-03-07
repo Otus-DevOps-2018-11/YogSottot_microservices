@@ -71,6 +71,12 @@ services:
        - mongodb-exporter
   blackbox-exporter:
     image: prom/blackbox-exporter:${BLACKBOX_EXPORTER_VERSION}
+    command:
+      - --config.file=/etc/blackbox_exporter/blackbox.yml
+    volumes:
+      - /home/docker-user/blackbox_exporter:/etc/blackbox_exporter
+    ports:
+      - '9115:9115'
     networks:
       back_net:
        aliases:
