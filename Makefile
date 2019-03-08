@@ -80,18 +80,23 @@ push-blackbox-exporter:
 # make vm
 create-vm:
 	docker-machine create --driver google \
---google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts \
---google-machine-type n1-standard-1 \
---google-zone europe-north1-b \
-docker-host
-	docker-compose up -d
-
+	--google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts \
+	--google-machine-type n1-standard-1 \
+	--google-zone europe-north1-b \
+	docker-host
+	eval $$(docker-machine env docker-host)
+	cd docker/ ; docker-compose up -d 
+	
+# destroy vm
+destroy-vm:
+	eval $$(docker-machine env --unset)
+	docker-machine rm docker-host -f
 
 # run app
-run-app: docker-compose
- 	docker-compose down
-	docker-compose up -d
-
-
-
-
+run-app:
+	cd docker/ ; docker-compose down
+	cd docker/ ; docker-compose up -d
+	
+# down app
+down-app:
+	cd docker/ ; docker-compose down
