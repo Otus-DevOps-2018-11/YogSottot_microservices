@@ -4,6 +4,9 @@ cnf ?= docker/.env
 include $(cnf)
 export $(shell sed 's/=.*//' $(cnf))
 
+# all
+all: create-vm build-all run-app
+
 # build all images
 build-all:
 	docker build -t $(USER_NAME)/prometheus monitoring/prometheus/
@@ -85,7 +88,6 @@ create-vm:
 	--google-zone europe-north1-b \
 	docker-host
 	eval $$(docker-machine env docker-host)
-	cd docker/ ; docker-compose up -d 
 	
 # destroy vm
 destroy-vm:
@@ -100,3 +102,7 @@ run-app:
 # down app
 down-app:
 	cd docker/ ; docker-compose down
+
+# show env
+show-env:
+	docker-machine env docker-host

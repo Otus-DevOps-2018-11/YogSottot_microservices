@@ -1296,7 +1296,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 - Добавлен запуск node exporter в docker-compose для сбора информации о хосте  
 - Образы загружены в [docker registry](https://hub.docker.com/u/yogsottot)  
 
-### Задание со * #1
+### Задание со * №1
 
 - Добавлен в Prometheus мониторинг MongoDB с использованием [percona/mongodb_exporter](https://github.com/percona/mongodb_exporter/). Dockerfile в ```monitoring/mongodb_exporter```. Образ загружен в [docker registry](https://cloud.docker.com/u/yogsottot/repository/docker/yogsottot/mongodb_exporter)  
 - Добавлен blackbox exporter для проверки доступности сервисов по http  
@@ -1315,7 +1315,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
   </p></details>
 
-### Задание со * #2
+### Задание со * №2
 
 - Создан Makefile, который умеет:
   1. Билдить все образы, которые сейчас используются (blackbox-exporter тоже переведён на использование образа со встроенным конфигом, чтобы не было необходимости монтировать директорию) или любой образ по выбору.
