@@ -1208,6 +1208,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ## ДЗ №16. Устройство Gitlab CI. Построение процесса непрерывной интеграции  
 
+<details><summary>Спойлер</summary><p>
+
 - Создана вм
 
   <details><summary>Команда для создания</summary><p>
@@ -1280,3 +1282,43 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 - Добавлены stage и production окружения  
 - Добавлена директива, которая не позволяет выкатить на staging и production код,не помеченный с помощью тэга в git (only: - /^\d+\.\d+\.\d+/)  
 - Добавлен job, который определяет динамическое окружение для каждой ветки в репозитории, кроме ветки master
+
+</p></details>
+
+## ДЗ №17. Введение в мониторинг. Модели и принципы работы систем мониторинга  
+
+- Создана новая вм и запущен контейнер prometheus  
+- Создана директория monitoring, добавлен dockerfile для создания настроенного образа prometheus, собран образ  
+- Добавлена секция запуска prometheus в docker-compose. Созданы образы приложения с помощью docker_build.sh  
+- Запущены сервисы с помощью docker-compose  
+- Проверно, что указанные в кофнигурации endpoints в состоянии UP  
+- Протестировано реагирование графиков на отключение сервисов  
+- Добавлен запуск node exporter в docker-compose для сбора информации о хосте  
+- Образы загружены в [docker registry](https://hub.docker.com/u/yogsottot)  
+
+### Задание со * №1
+
+- Добавлен в Prometheus мониторинг MongoDB с использованием [percona/mongodb_exporter](https://github.com/percona/mongodb_exporter/). Dockerfile в ```monitoring/mongodb_exporter```. Образ загружен в [docker registry](https://cloud.docker.com/u/yogsottot/repository/docker/yogsottot/mongodb_exporter)  
+- Добавлен blackbox exporter для проверки доступности сервисов по http  
+  Конфигурация для экспортера загружается на впс с помощью [docker-machine mount](https://docs.docker.com/machine/reference/mount/)
+
+  <details><summary>Процесс</summary><p>
+
+  ```bash
+  cd docker
+  docker-machine ssh prometheus mkdir blackbox_exporter
+  docker-machine mount prometheus:/home/docker-user/blackbox_exporter ../monitoring/blackbox_exporter/mount
+  # после завершения тетсов, отмонтировать
+  docker-machine mount -u prometheus:/home/docker-user/blackbox_exporter ../monitoring/blackbox_exporter/mount
+
+  ```
+
+  </p></details>
+
+### Задание со * №2
+
+- Создан Makefile, который умеет:
+  1. Билдить все образы, которые сейчас используются (blackbox-exporter тоже переведён на использование образа со встроенным конфигом, чтобы не было необходимости монтировать директорию) или любой образ по выбору.
+  2. Умеет пушить их все или любой образ в докер хаб
+  3. Умеет создавать и удалять вм в gce
+  4. Умеет запускать и останавливать приложение
