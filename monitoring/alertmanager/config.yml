@@ -1,0 +1,11 @@
+---
+global:
+  slack_api_url: 'https://hooks.slack.com/services/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'
+
+route:
+  receiver: 'slack-notifications'
+
+receivers:
+  - name: 'slack-notifications'
+    slack_configs:
+      - channel: '#yogsottot-webhook'

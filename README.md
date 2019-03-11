@@ -1287,6 +1287,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ## ДЗ №17. Введение в мониторинг. Модели и принципы работы систем мониторинга  
 
+<details><summary>Спойлер</summary><p>
+
 - Создана новая вм и запущен контейнер prometheus  
 - Создана директория monitoring, добавлен dockerfile для создания настроенного образа prometheus, собран образ  
 - Добавлена секция запуска prometheus в docker-compose. Созданы образы приложения с помощью docker_build.sh  
@@ -1322,3 +1324,53 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   2. Умеет пушить их все или любой образ в докер хаб
   3. Умеет создавать и удалять вм в gce
   4. Умеет запускать и останавливать приложение
+
+</p></details>
+
+## ДЗ №18. Мониторинг приложения и инфраструктуры  
+
+### Мониторинг Docker контейнеров  
+
+- Запуск мониторинга вынесен в отдельный compose-файл. В makefile внесены нужные изменения.
+- Добавлен запуск cAdvisor. Открыт порт для его веб-интерфейса. Проверено, что метрики собираются.
+
+  <details><summary>Процесс</summary><p>
+
+  ```bash
+  gcloud compute firewall-rules create cadvisor-default --allow tcp:8080
+
+  ```
+
+  </p></details>
+
+### Визуализация метрик  
+
+- Добавлен запуск Grafana. Открыт порт.  
+- Добавлена панель из hub.  
+
+### Сбор метрик приложения  
+
+- Создана панель для метрик приложения.  
+- Использована для первого графика (UI http requests) функция rate аналогично второму графику (Rate of UI HTTP Requests with Error)
+- Ознакомлен с гистограммами ```ui_request_response_time_bucket{path="/"}```
+- Добавлена панель с перцентилем ```histogram_quantile(0.95, sum(rate(ui_request_response_time_bucket[5m])) by (le))```
+- Панель экспортирована в файл.  
+
+### Сбор метрик бизнес логики  
+
+- Добавлена и экспортирован панель Business_Logic_Monitoring ```rate(post_count[1h])``` ```rate(comment_count[1h])```
+
+### Алертинг  
+
+- Добавлен alertmanager и конфиги для него.  
+  
+  <details><summary>Уведомление в salack</summary><p>
+
+  ![alert](https://i.imgur.com/fmluXhG.png)
+
+  </p></details>
+  
+### Задания со *  
+
+- В Makefile созданы билд и публикация добавленных в этом ДЗ сервисов. (С версионированием)  
+- 

@@ -9,76 +9,80 @@ all: create-vm build-all run-app
 
 # build all images
 build-all:
-	docker build -t $(USER_NAME)/prometheus monitoring/prometheus/
-	docker build -t $(USER_NAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION) monitoring/blackbox_exporter/
-	docker build -t $(USERNAME)/mongodb_exporter:$(MONGO_EXPORTER_VERSION) monitoring/mongodb_exporter/
-	docker build -t $(USERNAME)/comment src/comment/
-	docker build -t $(USERNAME)/post src/post-py/
-	docker build -t $(USERNAME)/ui src/ui/
+	eval $$(docker-machine env docker-host) ; docker build --build-arg PROMETHEUS_VERSION=$(PROMETHEUS_VERSION) -t $(USERNAME)/prometheus:$(PROMETHEUS_VERSION) monitoring/prometheus/
+	eval $$(docker-machine env docker-host) ; docker build --build-arg BLACKBOX_EXPORTER_VERSION=$(BLACKBOX_EXPORTER_VERSION) -t $(USERNAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION) monitoring/blackbox_exporter/
+	eval $$(docker-machine env docker-host) ; docker build --build-arg MONGO_EXPORTER_VERSION=$(MONGO_EXPORTER_VERSION) -t $(USERNAME)/mongodb_exporter:$(MONGO_EXPORTER_VERSION) monitoring/mongodb_exporter/
+	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/comment src/comment/
+	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/post src/post-py/
+	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/ui src/ui/
+	eval $$(docker-machine env docker-host) ; docker build --build-arg ALERTMANAGER_VERSION=$(ALERTMANAGER_VERSION) -t $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION) monitoring/alertmanager/
 	
 # build prometheus
 build-prometheus:
-	docker build -t $(USER_NAME)/prometheus monitoring/prometheus/
+	eval $$(docker-machine env docker-host) ; docker build --build-arg PROMETHEUS_VERSION=$(PROMETHEUS_VERSION) -t $(USERNAME)/prometheus:$(PROMETHEUS_VERSION) monitoring/prometheus/
 
 # build blackbox-exporter
 build-blackbox-exporter:
-	docker build -t $(USER_NAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION) monitoring/blackbox_exporter/
+	eval $$(docker-machine env docker-host) ; docker build --build-arg BLACKBOX_EXPORTER_VERSION=$(BLACKBOX_EXPORTER_VERSION) -t $(USERNAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION) monitoring/blackbox_exporter/
 
 # build mongodb_exporter
 build-mongodb-exporter:
-	docker build -t $(USERNAME)/mongodb_exporter:$(MONGO_EXPORTER_VERSION) monitoring/mongodb_exporter/
+	eval $$(docker-machine env docker-host) ; docker build --build-arg MONGO_EXPORTER_VERSION=$(MONGO_EXPORTER_VERSION) -t $(USERNAME)/mongodb_exporter:$(MONGO_EXPORTER_VERSION) monitoring/mongodb_exporter/
 
 # build reddit-comment
 build-reddit-comment:
-	docker build -t $(USERNAME)/comment src/comment/
+	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/comment src/comment/
 
 # build reddit-post
 build-reddit-post:
-	docker build -t $(USERNAME)/post src/post-py/
+	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/post src/post-py/
 
 # build reddit-ui
 build-reddit-ui:
-	docker build -t $(USERNAME)/ui src/ui/
+	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/ui src/ui/
+
+# build reddit-ui
+build-alertmanager:
+	eval $$(docker-machine env docker-host) ; docker build --build-arg ALERTMANAGER_VERSION=$(ALERTMANAGER_VERSION) -t $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION) monitoring/alertmanager/
+
 
 # push all images
 push-all:
-	docker login
-	docker push $(USER_NAME)/ui
-	docker push $(USER_NAME)/comment
-	docker push $(USER_NAME)/post
-	docker push $(USER_NAME)/prometheus
-	docker push $(USER_NAME)/mongodb_exporter:$(MONGO_EXPORTER_VERSION)
-	docker push $(USER_NAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION)
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/ui
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/comment
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/post
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/prometheus:$(PROMETHEUS_VERSION)
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/mongodb_exporter:$(MONGO_EXPORTER_VERSION)
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION)
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION)
 
 # push ui
 push-ui:
-	docker login
-	docker push $(USER_NAME)/ui
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/ui
 
 # push comment
 push-comment:
-	docker login
-	docker push $(USER_NAME)/comment
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/comment
 
 # push post
 push-post:
-	docker login
-	docker push $(USER_NAME)/post
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/post
 
 # push prometheus
 push-prometheus:
-	docker login
-	docker push $(USER_NAME)/prometheus
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/prometheus:$(PROMETHEUS_VERSION)
 
 # push mongodb_exporter
 push-mongodb_exporter:
-	docker login
-	docker push $(USER_NAME)/mongodb_exporter:$(MONGO_EXPORTER_VERSION)
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/mongodb_exporter:$(MONGO_EXPORTER_VERSION)
 
 # push blackbox-exporter
 push-blackbox-exporter:
-	docker login
-	docker push $(USER_NAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION)
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION)
+
+# push alertmanager
+push-alertmanager:
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION)
 
 # make vm
 create-vm:
@@ -96,12 +100,19 @@ destroy-vm:
 
 # run app
 run-app:
-	cd docker/ ; docker-compose down
-	cd docker/ ; docker-compose up -d
+	eval $$(docker-machine env docker-host) ; cd docker/ ; docker-compose down ; docker-compose up -d
 	
 # down app
 down-app:
-	cd docker/ ; docker-compose down
+	eval $$(docker-machine env docker-host) ; cd docker/ ; docker-compose down
+
+# run monitoring
+run-monitoring:
+	eval $$(docker-machine env docker-host) ; cd docker/ ; docker-compose -f docker-compose-monitoring.yml down ; docker-compose -f docker-compose-monitoring.yml up -d
+
+# down monitoring
+down-monitoring:
+	eval $$(docker-machine env docker-host) ; cd docker/ ; docker-compose -f docker-compose-monitoring.yml down
 
 # show env
 show-env:

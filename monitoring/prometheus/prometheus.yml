@@ -18,6 +18,12 @@ scrape_configs:
       - targets:
           - 'comment:9292'
 
+  - job_name: 'post'
+    static_configs:
+      - targets:
+          - 'post:5000'
+
+
   - job_name: 'node'
     static_configs:
       - targets:
@@ -46,3 +52,18 @@ scrape_configs:
         target_label: instance
       - target_label: __address__
         replacement: blackbox-exporter:9115
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets:
+          - 'cadvisor:8080'
+
+rule_files:
+  - "alerts.yml"
+
+alerting:
+  alertmanagers:
+    - scheme: http
+      static_configs:
+        - targets:
+            - "alertmanager:9093"
