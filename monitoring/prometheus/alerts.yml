@@ -10,3 +10,11 @@ groups:
         annotations:
           description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute'
           summary: 'Instance {{ $labels.instance }} down'
+      - alert: HightResponceTime95
+        expr: histogram_quantile(0.95, sum(rate(ui_request_response_time_bucket[5m])) by (le)) >= 0.8
+        for: 1m
+        labels:
+          severity: page
+        annotations:
+          description: '95 percentile of responce time is 0.0050 sec for more than 1 minute'
+          summary: '95 percentile of responce time is 0.0050 sec'

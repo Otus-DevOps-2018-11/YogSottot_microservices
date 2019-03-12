@@ -1364,7 +1364,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 - Добавлен alertmanager и конфиги для него.  
   
-  <details><summary>Уведомление в salack</summary><p>
+  <details><summary>Уведомление в slack</summary><p>
 
   ![alert](https://i.imgur.com/fmluXhG.png)
 
@@ -1380,3 +1380,10 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   Внесены изменения в ```docker-compose-monitoring.yml``` и ```prometheus.yml```  
   Добавлен ```dockerfile``` и ```telegraf.conf``` в директорию ```monitoring/telegraf```  
   Внесены записи в ```makefile```  
+- Реализован алерт, на 95 процентиль времени ответа UI. Для целей тестирования срабатывания алерта был установлено пороговое значение ```0.0050 sec```. Закоммичено со значением ```0.8 sec```
+
+  <details><summary>Срабатывание</summary><p>
+
+  ![alert](https://i.imgur.com/tKgcpik.png)
+
+  </p></details>
