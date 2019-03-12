@@ -58,6 +58,10 @@ scrape_configs:
       - targets:
           - 'cadvisor:8080'
 
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['localhost:9323']
+
 rule_files:
   - "alerts.yml"
 

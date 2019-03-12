@@ -28,25 +28,25 @@ services:
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
     networks:
       back_net:
-       aliases:
-       - node-exporter
+        aliases:
+          - node-exporter
   mongodb_exporter:
     image: ${USERNAME}/mongodb_exporter:${MONGO_EXPORTER_VERSION}
     networks:
       back_net:
-       aliases:
-       - mongodb-exporter
+        aliases:
+          - mongodb-exporter
   blackbox-exporter:
     image: ${USERNAME}/blackbox-exporter:${BLACKBOX_EXPORTER_VERSION}
     ports:
       - '9115:9115'
     networks:
       back_net:
-       aliases:
-       - blackbox-exporter
+        aliases:
+          - blackbox-exporter
       front_net:
-       aliases:
-       - blackbox-exporter
+        aliases:
+          - blackbox-exporter
   cadvisor:
     image: google/cadvisor:${CADVISOR_VERSION}
     volumes:
@@ -58,11 +58,11 @@ services:
       - '8080:8080'
     networks:
       back_net:
-       aliases:
-       - cadvisor
+        aliases:
+          - cadvisor
       front_net:
-       aliases:
-       - cadvisor
+        aliases:
+          - cadvisor
   grafana:
     image: grafana/grafana:${GRAFANA_VERSION}
     volumes:
@@ -76,11 +76,11 @@ services:
       - 3000:3000
     networks:
       back_net:
-       aliases:
-       - grafana
+        aliases:
+          - grafana
       front_net:
-       aliases:
-       - grafana
+        aliases:
+          - grafana
   alertmanager:
     image: ${USERNAME}/alertmanager:${ALERTMANAGER_VERSION}
     command:
@@ -89,11 +89,11 @@ services:
       - 9093:9093
     networks:
       back_net:
-       aliases:
-       - alertmanager
+        aliases:
+          - alertmanager
       front_net:
-       aliases:
-       - alertmanager
+        aliases:
+          - alertmanager
 
 
 volumes:
