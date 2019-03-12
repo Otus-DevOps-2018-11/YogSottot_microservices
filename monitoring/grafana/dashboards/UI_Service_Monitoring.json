@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 3,
   "links": [],
   "panels": [
     {
@@ -23,7 +23,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus Server",
       "description": "All HTTP requests that UI service receives",
       "fill": 1,
       "gridPos": {
@@ -108,7 +107,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus Server",
       "description": "Rate of UI HTTP Requests with Errors",
       "fill": 1,
       "gridPos": {
@@ -193,7 +191,6 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Prometheus Server",
       "fill": 1,
       "gridPos": {
         "h": 8,
@@ -314,5 +311,5 @@
   "timezone": "",
   "title": "UI_Service_Monitoring",
   "uid": "9jvf68Cmz",
-  "version": 9
+  "version": 2
 }

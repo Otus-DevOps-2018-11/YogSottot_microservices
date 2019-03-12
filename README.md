@@ -1373,4 +1373,6 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 ### Задания со *  
 
 - В Makefile созданы билд и публикация добавленных в этом ДЗ сервисов. (С версионированием)  
-- 
+- В Docker в [экспериментальном режиме](https://docs.docker.com/config/thirdparty/prometheus/) реализована отдача метрик в формате Prometheus. Добавлен сбор этих метрик в Prometheus.  
+  В ```makefile``` для команды ```create-vm``` добавлены параметры для активации данной функции докер-демона ```--engine-opt experimental --engine-opt metrics-addr=172.17.0.1:9323```  
+  Добавлена панель [Docker Engine Metrics](https://grafana.com/dashboards/1229)
