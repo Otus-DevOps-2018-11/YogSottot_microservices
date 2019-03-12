@@ -1376,3 +1376,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 - В Docker в [экспериментальном режиме](https://docs.docker.com/config/thirdparty/prometheus/) реализована отдача метрик в формате Prometheus. Добавлен сбор этих метрик в Prometheus.  
   В ```makefile``` для команды ```create-vm``` добавлены параметры для активации данной функции докер-демона ```--engine-opt experimental --engine-opt metrics-addr=172.17.0.1:9323```  
   Добавлена панель [Docker Engine Metrics](https://grafana.com/dashboards/1229)
+- Для сбора метрик с Docker демона также можно использовать [Telegraf от InfluxDB](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/docker). Добавлен сбор этих метрик в Prometheus. Добавлена панель ```Telegraf_Docker.json```  
+  Внесены изменения в ```docker-compose-monitoring.yml``` и ```prometheus.yml```  
+  Добавлен ```dockerfile``` и ```telegraf.conf``` в директорию ```monitoring/telegraf```  
+  Внесены записи в ```makefile```  

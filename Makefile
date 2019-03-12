@@ -5,7 +5,7 @@ include $(cnf)
 export $(shell sed 's/=.*//' $(cnf))
 
 # all
-all: create-vm build-all run-app
+all: create-vm build-all run-app run-monitoring
 
 # build all images
 build-all:
@@ -16,6 +16,7 @@ build-all:
 	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/post src/post-py/
 	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/ui src/ui/
 	eval $$(docker-machine env docker-host) ; docker build --build-arg ALERTMANAGER_VERSION=$(ALERTMANAGER_VERSION) -t $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION) monitoring/alertmanager/
+	eval $$(docker-machine env docker-host) ; docker build --build-arg TELEGRAF_VERSION=$(TELEGRAF_VERSION) -t $(USERNAME)/telegraf:$(TELEGRAF_VERSION) monitoring/telegraf/
 	
 # build prometheus
 build-prometheus:
@@ -41,9 +42,13 @@ build-reddit-post:
 build-reddit-ui:
 	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/ui src/ui/
 
-# build reddit-ui
+# build alertmanager
 build-alertmanager:
 	eval $$(docker-machine env docker-host) ; docker build --build-arg ALERTMANAGER_VERSION=$(ALERTMANAGER_VERSION) -t $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION) monitoring/alertmanager/
+
+# build telegraf
+build-telegraf:
+	eval $$(docker-machine env docker-host) ; docker build --build-arg TELEGRAF_VERSION=$(TELEGRAF_VERSION) -t $(USERNAME)/telegraf:$(TELEGRAF_VERSION) monitoring/telegraf/
 
 
 # push all images
@@ -55,6 +60,7 @@ push-all:
 	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/mongodb_exporter:$(MONGO_EXPORTER_VERSION)
 	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION)
 	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION)
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/telegraf:$(TELEGRAF_VERSION)
 
 # push ui
 push-ui:
@@ -83,6 +89,10 @@ push-blackbox-exporter:
 # push alertmanager
 push-alertmanager:
 	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION)
+
+# push telegraf
+push-telegraf:
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/telegraf:$(TELEGRAF_VERSION)
 
 # make vm
 create-vm:
