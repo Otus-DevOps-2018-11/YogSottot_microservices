@@ -2,11 +2,12 @@
 apiVersion: 1
 
 providers:
-- name: 'default'
-  orgId: 1
-  folder: ''
-  type: file
-  disableDeletion: false
-  updateIntervalSeconds: 60 #how often Grafana will scan for changed dashboards
-  options:
-    path: /etc/grafana/provisioning/loaddashboards/
+  - name: 'default'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    # how often Grafana will scan for changed dashboards
+    updateIntervalSeconds: 60
+    options:
+      path: /etc/grafana/provisioning/loaddashboards/

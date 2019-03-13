@@ -1403,3 +1403,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   Аутентификация в Stackdriver API происходит автоматически, так как grafana запущена внутри gce. (Должен быть [создан](http://docs.grafana.org/datasources/stackdriver/) GCE Default Service Account).  
   В ```makefile``` для создания вм [указано](https://developers.google.com/identity/protocols/googlescopes#monitoringv3) ```--google-scopes "https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"```  
   Источник и панель добавлены в автопровизионинг.  
+
+### Задания со ***
+
+- Реализована схема с проксированием запросов от Grafana к Prometheus через [Trickster](https://github.com/Comcast/trickster), кеширующий прокси от Comcast. Внесены изменения в ```datasource.yaml``` и ```docker-compose-monitoring.yml```, теперь Trickster будет использоваться по умолчанию.  

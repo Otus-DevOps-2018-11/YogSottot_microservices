@@ -107,6 +107,15 @@ services:
       front_net:
         aliases:
           - telegraf
+  trickster:
+    image: tricksterio/trickster:${TRICKSTER_VERSION}
+    networks:
+      back_net:
+        aliases:
+          - trickster
+      front_net:
+        aliases:
+          - trickster
 
 volumes:
   prometheus_data:
