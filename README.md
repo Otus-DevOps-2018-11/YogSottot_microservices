@@ -1398,4 +1398,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ### Задания со **  
 
-- Реализовано автоматическое добавление источника данных и созданных в данном ДЗ панелей в графану  
+- Реализовано [автоматическое добавление](http://docs.grafana.org/administration/provisioning/) источника данных и созданных в данном ДЗ панелей в графану.  
+- Реализован сбор метрик со Stackdriver с помощью встроенного в grafana источника данных.  
+  Аутентификация в Stackdriver API происходит автоматически, так как grafana запущена внутри gce. (Должен быть [создан](http://docs.grafana.org/datasources/stackdriver/) GCE Default Service Account).  
+  В ```makefile``` для создания вм [указано](https://developers.google.com/identity/protocols/googlescopes#monitoringv3) ```--google-scopes "https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"```  
+  Источник и панель добавлены в автопровизионинг.  

@@ -1,0 +1,1871 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 17,
+  "links": [],
+  "panels": [
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Stackdriver",
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aliasBy": "",
+          "alignOptions": [
+            {
+              "expanded": true,
+              "label": "Alignment options",
+              "options": [
+                {
+                  "label": "delta",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "delta",
+                  "value": "ALIGN_DELTA",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "rate",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "rate",
+                  "value": "ALIGN_RATE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "min",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "min",
+                  "value": "ALIGN_MIN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "max",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "max",
+                  "value": "ALIGN_MAX",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "mean",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "mean",
+                  "value": "ALIGN_MEAN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "count",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "count",
+                  "value": "ALIGN_COUNT",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "BOOL"
+                  ]
+                },
+                {
+                  "label": "sum",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "sum",
+                  "value": "ALIGN_SUM",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "stddev",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "stddev",
+                  "value": "ALIGN_STDDEV",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "percent change",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "percent change",
+                  "value": "ALIGN_PERCENT_CHANGE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                }
+              ]
+            }
+          ],
+          "alignmentPeriod": "stackdriver-auto",
+          "crossSeriesReducer": "REDUCE_MEAN",
+          "defaultProject": "loading project...",
+          "filters": [],
+          "groupBys": [
+            "metric.label.instance_name"
+          ],
+          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_MEAN&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"compute.googleapis.com/instance/network/sent_bytes_count\"&interval.endTime=2019-03-13T11:07:40Z&interval.startTime=2019-03-13T05:07:40Z&view=FULL",
+          "lastQueryError": "",
+          "metricKind": "DELTA",
+          "metricType": "compute.googleapis.com/instance/network/sent_bytes_count",
+          "perSeriesAligner": "ALIGN_DELTA",
+          "refId": "A",
+          "service": "",
+          "unit": "By",
+          "usedAlignmentPeriod": 60,
+          "valueType": "INT64"
+        },
+        {
+          "aliasBy": "",
+          "alignOptions": [
+            {
+              "expanded": true,
+              "label": "Alignment options",
+              "options": [
+                {
+                  "label": "delta",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "delta",
+                  "value": "ALIGN_DELTA",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "rate",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "rate",
+                  "value": "ALIGN_RATE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "min",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "min",
+                  "value": "ALIGN_MIN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "max",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "max",
+                  "value": "ALIGN_MAX",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "mean",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "mean",
+                  "value": "ALIGN_MEAN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "count",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "count",
+                  "value": "ALIGN_COUNT",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "BOOL"
+                  ]
+                },
+                {
+                  "label": "sum",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "sum",
+                  "value": "ALIGN_SUM",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "stddev",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "stddev",
+                  "value": "ALIGN_STDDEV",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "percent change",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "percent change",
+                  "value": "ALIGN_PERCENT_CHANGE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                }
+              ]
+            }
+          ],
+          "alignmentPeriod": "stackdriver-auto",
+          "crossSeriesReducer": "REDUCE_MEAN",
+          "defaultProject": "loading project...",
+          "filters": [],
+          "groupBys": [
+            "metric.label.instance_name"
+          ],
+          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_MEAN&aggregation.groupByFields=metric.label.instance_name&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"compute.googleapis.com/instance/network/sent_packets_count\"&interval.endTime=2019-03-13T11:08:05Z&interval.startTime=2019-03-13T05:08:05Z&view=FULL",
+          "lastQueryError": "",
+          "metricKind": "DELTA",
+          "metricType": "compute.googleapis.com/instance/network/sent_packets_count",
+          "perSeriesAligner": "ALIGN_DELTA",
+          "refId": "B",
+          "service": "",
+          "unit": "1",
+          "usedAlignmentPeriod": 60,
+          "valueType": "INT64"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Sent — bytes / packets",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Stackdriver",
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 6,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aliasBy": "",
+          "alignOptions": [
+            {
+              "expanded": true,
+              "label": "Alignment options",
+              "options": [
+                {
+                  "label": "delta",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "delta",
+                  "value": "ALIGN_DELTA",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "rate",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "rate",
+                  "value": "ALIGN_RATE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "min",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "min",
+                  "value": "ALIGN_MIN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "max",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "max",
+                  "value": "ALIGN_MAX",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "mean",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "mean",
+                  "value": "ALIGN_MEAN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "count",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "count",
+                  "value": "ALIGN_COUNT",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "BOOL"
+                  ]
+                },
+                {
+                  "label": "sum",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "sum",
+                  "value": "ALIGN_SUM",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "stddev",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "stddev",
+                  "value": "ALIGN_STDDEV",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "percent change",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "percent change",
+                  "value": "ALIGN_PERCENT_CHANGE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                }
+              ]
+            }
+          ],
+          "alignmentPeriod": "stackdriver-auto",
+          "crossSeriesReducer": "REDUCE_MEAN",
+          "defaultProject": "loading project...",
+          "filters": [],
+          "groupBys": [
+            "metric.label.instance_name"
+          ],
+          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_MEAN&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"compute.googleapis.com/firewall/dropped_bytes_count\"&interval.endTime=2019-03-13T09:54:30Z&interval.startTime=2019-03-13T03:54:30Z&view=FULL",
+          "lastQueryError": "",
+          "metricKind": "DELTA",
+          "metricType": "compute.googleapis.com/instance/uptime",
+          "perSeriesAligner": "ALIGN_DELTA",
+          "refId": "A",
+          "service": "",
+          "unit": "s",
+          "usedAlignmentPeriod": 60,
+          "valueType": "DOUBLE"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Uptime",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Stackdriver",
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 4,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aliasBy": "",
+          "alignOptions": [
+            {
+              "expanded": true,
+              "label": "Alignment options",
+              "options": [
+                {
+                  "label": "delta",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "delta",
+                  "value": "ALIGN_DELTA",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "rate",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "rate",
+                  "value": "ALIGN_RATE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "min",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "min",
+                  "value": "ALIGN_MIN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "max",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "max",
+                  "value": "ALIGN_MAX",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "mean",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "mean",
+                  "value": "ALIGN_MEAN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "count",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "count",
+                  "value": "ALIGN_COUNT",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "BOOL"
+                  ]
+                },
+                {
+                  "label": "sum",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "sum",
+                  "value": "ALIGN_SUM",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "stddev",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "stddev",
+                  "value": "ALIGN_STDDEV",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "percent change",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "percent change",
+                  "value": "ALIGN_PERCENT_CHANGE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                }
+              ]
+            }
+          ],
+          "alignmentPeriod": "stackdriver-auto",
+          "crossSeriesReducer": "REDUCE_MEAN",
+          "defaultProject": "loading project...",
+          "filters": [],
+          "groupBys": [
+            "metric.label.instance_name"
+          ],
+          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_MEAN&aggregation.perSeriesAligner=ALIGN_INTERPOLATE&filter=metric.type=\"compute.googleapis.com/instance/cpu/reserved_cores\"&interval.endTime=2019-03-13T09:53:08Z&interval.startTime=2019-03-13T03:53:08Z&view=FULL",
+          "lastQueryError": "",
+          "metricKind": "DELTA",
+          "metricType": "compute.googleapis.com/instance/cpu/usage_time",
+          "perSeriesAligner": "ALIGN_DELTA",
+          "refId": "A",
+          "service": "",
+          "unit": "s",
+          "usedAlignmentPeriod": 60,
+          "valueType": "DOUBLE"
+        },
+        {
+          "aliasBy": "",
+          "alignOptions": [
+            {
+              "expanded": true,
+              "label": "Alignment options",
+              "options": [
+                {
+                  "label": "interpolate",
+                  "metricKinds": [
+                    "GAUGE"
+                  ],
+                  "text": "interpolate",
+                  "value": "ALIGN_INTERPOLATE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "next older",
+                  "metricKinds": [
+                    "GAUGE"
+                  ],
+                  "text": "next older",
+                  "value": "ALIGN_NEXT_OLDER",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION",
+                    "STRING",
+                    "VALUE_TYPE_UNSPECIFIED",
+                    "BOOL"
+                  ]
+                },
+                {
+                  "label": "min",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "min",
+                  "value": "ALIGN_MIN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "max",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "max",
+                  "value": "ALIGN_MAX",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "mean",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "mean",
+                  "value": "ALIGN_MEAN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "count",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "count",
+                  "value": "ALIGN_COUNT",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "BOOL"
+                  ]
+                },
+                {
+                  "label": "sum",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "sum",
+                  "value": "ALIGN_SUM",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "stddev",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "stddev",
+                  "value": "ALIGN_STDDEV",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "percent change",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "percent change",
+                  "value": "ALIGN_PERCENT_CHANGE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                }
+              ]
+            }
+          ],
+          "alignmentPeriod": "stackdriver-auto",
+          "crossSeriesReducer": "REDUCE_MEAN",
+          "defaultProject": "loading project...",
+          "filters": [],
+          "groupBys": [
+            "metric.label.instance_name"
+          ],
+          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_MEAN&aggregation.perSeriesAligner=ALIGN_INTERPOLATE&filter=metric.type=\"compute.googleapis.com/instance/cpu/utilization\"&interval.endTime=2019-03-13T11:03:43Z&interval.startTime=2019-03-13T05:03:43Z&view=FULL",
+          "lastQueryError": "",
+          "metricKind": "GAUGE",
+          "metricType": "compute.googleapis.com/instance/cpu/utilization",
+          "perSeriesAligner": "ALIGN_INTERPOLATE",
+          "refId": "B",
+          "service": "",
+          "unit": "1",
+          "usedAlignmentPeriod": 60,
+          "valueType": "DOUBLE"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "CPU usage / utlization",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "s",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Stackdriver",
+      "fill": 1,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 2,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aliasBy": "",
+          "alignOptions": [
+            {
+              "expanded": true,
+              "label": "Alignment options",
+              "options": [
+                {
+                  "label": "delta",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "delta",
+                  "value": "ALIGN_DELTA",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "rate",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "rate",
+                  "value": "ALIGN_RATE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "min",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "min",
+                  "value": "ALIGN_MIN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "max",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "max",
+                  "value": "ALIGN_MAX",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "mean",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "mean",
+                  "value": "ALIGN_MEAN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "count",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "count",
+                  "value": "ALIGN_COUNT",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "BOOL"
+                  ]
+                },
+                {
+                  "label": "sum",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "sum",
+                  "value": "ALIGN_SUM",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "stddev",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "stddev",
+                  "value": "ALIGN_STDDEV",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "percent change",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "percent change",
+                  "value": "ALIGN_PERCENT_CHANGE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                }
+              ]
+            }
+          ],
+          "alignmentPeriod": "stackdriver-auto",
+          "crossSeriesReducer": "REDUCE_MEAN",
+          "defaultProject": "loading project...",
+          "filters": [],
+          "groupBys": [
+            "metric.label.instance_name"
+          ],
+          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_MEAN&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"compute.googleapis.com/firewall/dropped_bytes_count\"&interval.endTime=2019-03-13T09:38:47Z&interval.startTime=2019-03-13T03:38:47Z&view=FULL",
+          "lastQueryError": "",
+          "metricKind": "DELTA",
+          "metricType": "compute.googleapis.com/instance/disk/write_bytes_count",
+          "perSeriesAligner": "ALIGN_DELTA",
+          "refId": "A",
+          "service": "",
+          "unit": "By",
+          "usedAlignmentPeriod": 60,
+          "valueType": "INT64"
+        },
+        {
+          "aliasBy": "",
+          "alignOptions": [
+            {
+              "expanded": true,
+              "label": "Alignment options",
+              "options": [
+                {
+                  "label": "delta",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "delta",
+                  "value": "ALIGN_DELTA",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "rate",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "rate",
+                  "value": "ALIGN_RATE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "min",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "min",
+                  "value": "ALIGN_MIN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "max",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "max",
+                  "value": "ALIGN_MAX",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "mean",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "mean",
+                  "value": "ALIGN_MEAN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "count",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "count",
+                  "value": "ALIGN_COUNT",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "BOOL"
+                  ]
+                },
+                {
+                  "label": "sum",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "sum",
+                  "value": "ALIGN_SUM",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "stddev",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "stddev",
+                  "value": "ALIGN_STDDEV",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "percent change",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "percent change",
+                  "value": "ALIGN_PERCENT_CHANGE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                }
+              ]
+            }
+          ],
+          "alignmentPeriod": "stackdriver-auto",
+          "crossSeriesReducer": "REDUCE_MEAN",
+          "defaultProject": "loading project...",
+          "filters": [],
+          "groupBys": [
+            "metric.label.instance_name"
+          ],
+          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_MEAN&aggregation.groupByFields=metric.label.device_name&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\"&interval.endTime=2019-03-13T11:04:11Z&interval.startTime=2019-03-13T05:04:11Z&view=FULL",
+          "lastQueryError": "",
+          "metricKind": "DELTA",
+          "metricType": "compute.googleapis.com/instance/disk/read_bytes_count",
+          "perSeriesAligner": "ALIGN_DELTA",
+          "refId": "B",
+          "service": "",
+          "unit": "By",
+          "usedAlignmentPeriod": 60,
+          "valueType": "INT64"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Disk read/write bytes",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": "",
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Stackdriver",
+      "fill": 2,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 8,
+      "legend": {
+        "alignAsTable": false,
+        "avg": true,
+        "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": true,
+        "total": true,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "paceLength": 10,
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "aliasBy": "",
+          "alignOptions": [
+            {
+              "expanded": true,
+              "label": "Alignment options",
+              "options": [
+                {
+                  "label": "delta",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "delta",
+                  "value": "ALIGN_DELTA",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "rate",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "rate",
+                  "value": "ALIGN_RATE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "min",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "min",
+                  "value": "ALIGN_MIN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "max",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "max",
+                  "value": "ALIGN_MAX",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "mean",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "mean",
+                  "value": "ALIGN_MEAN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "count",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "count",
+                  "value": "ALIGN_COUNT",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "BOOL"
+                  ]
+                },
+                {
+                  "label": "sum",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "sum",
+                  "value": "ALIGN_SUM",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "stddev",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "stddev",
+                  "value": "ALIGN_STDDEV",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "percent change",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "percent change",
+                  "value": "ALIGN_PERCENT_CHANGE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                }
+              ]
+            }
+          ],
+          "alignmentPeriod": "stackdriver-auto",
+          "crossSeriesReducer": "REDUCE_MEAN",
+          "defaultProject": "loading project...",
+          "filters": [],
+          "groupBys": [
+            "metric.label.instance_name"
+          ],
+          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_PERCENTILE_05&aggregation.groupByFields=metric.label.instance_name&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"compute.googleapis.com/instance/network/received_bytes_count\"&interval.endTime=2019-03-13T11:06:52Z&interval.startTime=2019-03-13T05:06:52Z&view=FULL",
+          "lastQueryError": "",
+          "metricKind": "DELTA",
+          "metricType": "compute.googleapis.com/instance/network/received_bytes_count",
+          "perSeriesAligner": "ALIGN_DELTA",
+          "refId": "A",
+          "service": "",
+          "unit": "By",
+          "usedAlignmentPeriod": 60,
+          "valueType": "INT64"
+        },
+        {
+          "aliasBy": "",
+          "alignOptions": [
+            {
+              "expanded": true,
+              "label": "Alignment options",
+              "options": [
+                {
+                  "label": "delta",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "delta",
+                  "value": "ALIGN_DELTA",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "rate",
+                  "metricKinds": [
+                    "CUMULATIVE",
+                    "DELTA"
+                  ],
+                  "text": "rate",
+                  "value": "ALIGN_RATE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "min",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "min",
+                  "value": "ALIGN_MIN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "max",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "max",
+                  "value": "ALIGN_MAX",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "mean",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "mean",
+                  "value": "ALIGN_MEAN",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "count",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "count",
+                  "value": "ALIGN_COUNT",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "BOOL"
+                  ]
+                },
+                {
+                  "label": "sum",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "sum",
+                  "value": "ALIGN_SUM",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY",
+                    "DISTRIBUTION"
+                  ]
+                },
+                {
+                  "label": "stddev",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "stddev",
+                  "value": "ALIGN_STDDEV",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                },
+                {
+                  "label": "percent change",
+                  "metricKinds": [
+                    "GAUGE",
+                    "DELTA"
+                  ],
+                  "text": "percent change",
+                  "value": "ALIGN_PERCENT_CHANGE",
+                  "valueTypes": [
+                    "INT64",
+                    "DOUBLE",
+                    "MONEY"
+                  ]
+                }
+              ]
+            }
+          ],
+          "alignmentPeriod": "stackdriver-auto",
+          "crossSeriesReducer": "REDUCE_MEAN",
+          "defaultProject": "loading project...",
+          "filters": [],
+          "groupBys": [
+            "metric.label.instance_name"
+          ],
+          "lastQuery": "aggregation.alignmentPeriod=+60s&aggregation.crossSeriesReducer=REDUCE_MEAN&aggregation.perSeriesAligner=ALIGN_DELTA&filter=metric.type=\"compute.googleapis.com/firewall/dropped_packets_count\"&interval.endTime=2019-03-13T10:53:55Z&interval.startTime=2019-03-13T04:53:55Z&view=FULL",
+          "lastQueryError": "",
+          "metricKind": "DELTA",
+          "metricType": "compute.googleapis.com/instance/network/received_packets_count",
+          "perSeriesAligner": "ALIGN_DELTA",
+          "refId": "B",
+          "service": "",
+          "unit": "1",
+          "usedAlignmentPeriod": 60,
+          "valueType": "INT64"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Received — bytes / packets",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "schemaVersion": 18,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "Stackdriver monitoring",
+  "uid": "z3ko6Cjmk",
+  "version": 5
+}

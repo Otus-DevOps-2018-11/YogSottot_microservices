@@ -111,6 +111,7 @@ create-vm:
 	--google-machine-image https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-1604-lts \
 	--google-machine-type n1-standard-1 \
 	--google-zone europe-north1-b \
+	--google-scopes "https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring" \
 	docker-host
 	eval $$(docker-machine env docker-host)
 	

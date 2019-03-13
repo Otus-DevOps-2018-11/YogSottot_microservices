@@ -13,5 +13,15 @@ datasources:
   access: proxy
   # <int> org id. will default to orgId 1 if not specified
   orgId: 1
+  # <bool> mark as default datasource. Max one per org
+  isDefault: true
   # <string> url
   url: http://prometheus:9090
+  # <bool> allow users to edit datasources from the UI.
+  editable: true
+
+- name: Stackdriver
+  type: stackdriver
+  access: proxy
+  jsonData:
+     authenticationType: gce
