@@ -1395,3 +1395,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ![alert](https://i.imgur.com/bsMqi7M.png)
 
   </p></details>
+
+### Задания со **  
+
+- Реализовано автоматическое добавление источника данных и созданных в данном ДЗ панелей в графану  

@@ -22,4 +22,3 @@ receivers:
         smarthost: 'smtp.yandex.ru:587'
         auth_username: 'alert@domain.tld'
         auth_password: 'SecRetPas$$word'
-

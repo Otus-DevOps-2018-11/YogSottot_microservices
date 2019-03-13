@@ -17,6 +17,7 @@ build-all:
 	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/ui src/ui/
 	eval $$(docker-machine env docker-host) ; docker build --build-arg ALERTMANAGER_VERSION=$(ALERTMANAGER_VERSION) -t $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION) monitoring/alertmanager/
 	eval $$(docker-machine env docker-host) ; docker build --build-arg TELEGRAF_VERSION=$(TELEGRAF_VERSION) -t $(USERNAME)/telegraf:$(TELEGRAF_VERSION) monitoring/telegraf/
+	eval $$(docker-machine env docker-host) ; docker build --build-arg GRAFANA_VERSION=$(GRAFANA_VERSION) -t $(USERNAME)/grafana:$(GRAFANA_VERSION) monitoring/grafana/
 	
 # build prometheus
 build-prometheus:
@@ -50,6 +51,10 @@ build-alertmanager:
 build-telegraf:
 	eval $$(docker-machine env docker-host) ; docker build --build-arg TELEGRAF_VERSION=$(TELEGRAF_VERSION) -t $(USERNAME)/telegraf:$(TELEGRAF_VERSION) monitoring/telegraf/
 
+# build grafana
+build-grafana:
+	eval $$(docker-machine env docker-host) ; docker build --build-arg GRAFANA_VERSION=$(GRAFANA_VERSION) -t $(USERNAME)/grafana:$(GRAFANA_VERSION) monitoring/grafana/
+
 
 # push all images
 push-all:
@@ -61,6 +66,7 @@ push-all:
 	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION)
 	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION)
 	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/telegraf:$(TELEGRAF_VERSION)
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/grafana:$(GRAFANA_VERSION)
 
 # push ui
 push-ui:
@@ -93,6 +99,10 @@ push-alertmanager:
 # push telegraf
 push-telegraf:
 	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/telegraf:$(TELEGRAF_VERSION)
+
+# push grafana
+push-grafana:
+	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/grafana:$(GRAFANA_VERSION)
 
 # make vm
 create-vm:
