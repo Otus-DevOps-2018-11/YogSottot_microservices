@@ -1387,3 +1387,11 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ![alert](https://i.imgur.com/tKgcpik.png)
 
   </p></details>
+
+- Настроена интеграция Alertmanager с e-mail помимо слака. Так как в GCE заблокирована возможность отсылать письма напрямую, используется сторонний smtp-сервер. Закмиичены не настоящие данные. Было проведено тестирование с реальными данными.  
+  
+  <details><summary>Срабатывание</summary><p>
+
+  ![alert](https://i.imgur.com/bsMqi7M.png)
+
+  </p></details>
