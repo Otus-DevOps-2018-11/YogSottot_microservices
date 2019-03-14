@@ -1369,6 +1369,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ![alert](https://i.imgur.com/SZKfPBk.png)
 
   </p></details>
+
+- Образы заружены [docker registry](https://hub.docker.com/u/yogsottot)
   
 ### Задания со *  
 
