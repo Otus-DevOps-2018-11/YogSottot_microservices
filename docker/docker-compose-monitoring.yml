@@ -32,6 +32,12 @@ services:
           - node-exporter
   mongodb_exporter:
     image: ${USERNAME}/mongodb_exporter:${MONGO_EXPORTER_VERSION}
+    command:
+      - '-collect.database'
+      - '-collect.collection'
+      - '-collect.indexusage'
+      - '-collect.topmetrics'
+      - '-mongodb.uri=mongodb://post_db:27017'
     networks:
       back_net:
         aliases:

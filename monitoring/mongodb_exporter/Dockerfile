@@ -13,4 +13,4 @@ FROM       busybox:1.30
 EXPOSE     9216
 COPY --from=builder /go/src/github.com/percona/mongodb_exporter/mongodb_exporter /bin/mongodb_exporter
 
-ENTRYPOINT [ "mongodb_exporter", "-collect.database" ]
+ENTRYPOINT [ "mongodb_exporter" ]
