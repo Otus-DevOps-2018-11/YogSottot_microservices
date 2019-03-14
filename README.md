@@ -1366,13 +1366,13 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   
   <details><summary>Уведомление в slack</summary><p>
 
-  ![alert](https://i.imgur.com/fmluXhG.png)
+  ![alert](https://i.imgur.com/SZKfPBk.png)
 
   </p></details>
   
 ### Задания со *  
 
-- В Makefile созданы билд и публикация добавленных в этом ДЗ сервисов. (С версионированием)  
+- В Makefile добавлены билд и публикация новых сервисов. (С версионированием)  
 - В Docker в [экспериментальном режиме](https://docs.docker.com/config/thirdparty/prometheus/) реализована отдача метрик в формате Prometheus. Добавлен сбор этих метрик в Prometheus.  
   В ```makefile``` для команды ```create-vm``` добавлены параметры для активации данной функции докер-демона ```--engine-opt experimental --engine-opt metrics-addr=172.17.0.1:9323```  
   Добавлена панель [Docker Engine Metrics](https://grafana.com/dashboards/1229)
@@ -1388,7 +1388,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
   </p></details>
 
-- Настроена интеграция Alertmanager с e-mail помимо слака. Так как в GCE заблокирована возможность отсылать письма напрямую, используется сторонний smtp-сервер. Закмиичены не настоящие данные. Было проведено тестирование с реальными данными.  
+- Настроена интеграция Alertmanager с e-mail помимо слака. Так как в GCE заблокирована возможность отсылать письма напрямую, используется сторонний smtp-сервер. В закомиченном конфиге используются заглушки. Было проведено тестирование с реальными данными.  
   
   <details><summary>Срабатывание</summary><p>
 
@@ -1400,7 +1400,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 - Реализовано [автоматическое добавление](http://docs.grafana.org/administration/provisioning/) источника данных и созданных в данном ДЗ панелей в графану.  
 - Реализован сбор метрик со Stackdriver с помощью встроенного в grafana источника данных.  
-  Аутентификация в Stackdriver API происходит автоматически, так как grafana запущена внутри gce. (Должен быть [создан](http://docs.grafana.org/datasources/stackdriver/) GCE Default Service Account).  
+  Аутентификация в Stackdriver API происходит автоматически, так как grafana запущена внутри gce. (Должен быть [создан](http://docs.grafana.org/datasources/stackdriver/) GCE Default Service Account). Если используются утилиты gcloud, то он уже создан.  
   В ```makefile``` для создания вм [указано](https://developers.google.com/identity/protocols/googlescopes#monitoringv3) ```--google-scopes "https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"```  
   Источник и панель добавлены в автопровизионинг.  
 

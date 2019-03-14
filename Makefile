@@ -8,17 +8,12 @@ export $(shell sed 's/=.*//' $(cnf))
 all: create-vm build-all run-app run-monitoring
 
 # build all images
-build-all:
-	eval $$(docker-machine env docker-host) ; docker build --build-arg PROMETHEUS_VERSION=$(PROMETHEUS_VERSION) -t $(USERNAME)/prometheus:$(PROMETHEUS_VERSION) monitoring/prometheus/
-	eval $$(docker-machine env docker-host) ; docker build --build-arg BLACKBOX_EXPORTER_VERSION=$(BLACKBOX_EXPORTER_VERSION) -t $(USERNAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION) monitoring/blackbox_exporter/
-	eval $$(docker-machine env docker-host) ; docker build --build-arg MONGO_EXPORTER_VERSION=$(MONGO_EXPORTER_VERSION) -t $(USERNAME)/mongodb_exporter:$(MONGO_EXPORTER_VERSION) monitoring/mongodb_exporter/
-	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/comment src/comment/
-	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/post src/post-py/
-	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/ui src/ui/
-	eval $$(docker-machine env docker-host) ; docker build --build-arg ALERTMANAGER_VERSION=$(ALERTMANAGER_VERSION) -t $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION) monitoring/alertmanager/
-	eval $$(docker-machine env docker-host) ; docker build --build-arg TELEGRAF_VERSION=$(TELEGRAF_VERSION) -t $(USERNAME)/telegraf:$(TELEGRAF_VERSION) monitoring/telegraf/
-	eval $$(docker-machine env docker-host) ; docker build --build-arg GRAFANA_VERSION=$(GRAFANA_VERSION) -t $(USERNAME)/grafana:$(GRAFANA_VERSION) monitoring/grafana/
-	
+build-all: build-app build-monitoring
+
+build-app: build-reddit-comment build-reddit-post build-reddit-ui
+
+build-monitoring: build-prometheus build-mongodb-exporter build-alertmanager build-telegraf build-grafana
+
 # build prometheus
 build-prometheus:
 	eval $$(docker-machine env docker-host) ; docker build --build-arg PROMETHEUS_VERSION=$(PROMETHEUS_VERSION) -t $(USERNAME)/prometheus:$(PROMETHEUS_VERSION) monitoring/prometheus/
@@ -55,18 +50,17 @@ build-telegraf:
 build-grafana:
 	eval $$(docker-machine env docker-host) ; docker build --build-arg GRAFANA_VERSION=$(GRAFANA_VERSION) -t $(USERNAME)/grafana:$(GRAFANA_VERSION) monitoring/grafana/
 
+# build autoheal
+build-autoheal:
+	eval $$(docker-machine env docker-host) ; docker build --build-arg OPENSHIFT_VERSION=$(OPENSHIFT_VERSION) --build-arg AUTOHEAL_VERSION=$(AUTOHEAL_VERSION) -t $(USERNAME)/autoheal:$(AUTOHEAL_VERSION) monitoring/autoheal/
+
 
 # push all images
-push-all:
-	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/ui
-	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/comment
-	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/post
-	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/prometheus:$(PROMETHEUS_VERSION)
-	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/mongodb_exporter:$(MONGO_EXPORTER_VERSION)
-	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/blackbox-exporter:$(BLACKBOX_EXPORTER_VERSION)
-	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/alertmanager:$(ALERTMANAGER_VERSION)
-	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/telegraf:$(TELEGRAF_VERSION)
-	eval $$(docker-machine env docker-host) ; docker login ; docker push $(USERNAME)/grafana:$(GRAFANA_VERSION)
+push-all: push-app push-monitoring
+
+push-app: push-ui push-comment push-post
+
+push-monitoring: push-prometheus push-mongodb_exporter push-blackbox-exporter push-alertmanager push-telegraf push-grafana
 
 # push ui
 push-ui:
@@ -112,6 +106,7 @@ create-vm:
 	--google-machine-type n1-standard-1 \
 	--google-zone europe-north1-b \
 	--google-scopes "https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring" \
+	--google-tags http-server,https-server \
 	docker-host
 	eval $$(docker-machine env docker-host)
 	
