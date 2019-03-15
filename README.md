@@ -1287,6 +1287,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ## ДЗ №17. Введение в мониторинг. Модели и принципы работы систем мониторинга  
 
+<details><summary>Спойлер</summary><p>
+
 - Создана новая вм и запущен контейнер prometheus  
 - Создана директория monitoring, добавлен dockerfile для создания настроенного образа prometheus, собран образ  
 - Добавлена секция запуска prometheus в docker-compose. Созданы образы приложения с помощью docker_build.sh  
@@ -1322,3 +1324,88 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   2. Умеет пушить их все или любой образ в докер хаб
   3. Умеет создавать и удалять вм в gce
   4. Умеет запускать и останавливать приложение
+
+</p></details>
+
+## ДЗ №18. Мониторинг приложения и инфраструктуры  
+
+### Мониторинг Docker контейнеров  
+
+- Запуск мониторинга вынесен в отдельный compose-файл. В makefile внесены нужные изменения.
+- Добавлен запуск cAdvisor. Открыт порт для его веб-интерфейса. Проверено, что метрики собираются.
+
+  <details><summary>Процесс</summary><p>
+
+  ```bash
+  gcloud compute firewall-rules create cadvisor-default --allow tcp:8080
+
+  ```
+
+  </p></details>
+
+### Визуализация метрик  
+
+- Добавлен запуск Grafana. Открыт порт.  
+- Добавлена панель из hub.  
+
+### Сбор метрик приложения  
+
+- Создана панель для метрик приложения.  
+- Использована для первого графика (UI http requests) функция rate аналогично второму графику (Rate of UI HTTP Requests with Error)
+- Ознакомлен с гистограммами ```ui_request_response_time_bucket{path="/"}```
+- Добавлена панель с перцентилем ```histogram_quantile(0.95, sum(rate(ui_request_response_time_bucket[5m])) by (le))```
+- Панель экспортирована в файл.  
+
+### Сбор метрик бизнес логики  
+
+- Добавлена и экспортирован панель Business_Logic_Monitoring ```rate(post_count[1h])``` ```rate(comment_count[1h])```
+
+### Алертинг  
+
+- Добавлен alertmanager и конфиги для него.  
+  
+  <details><summary>Уведомление в slack</summary><p>
+
+  ![alert](https://i.imgur.com/SZKfPBk.png)
+
+  </p></details>
+
+- Образы заружены [docker registry](https://hub.docker.com/u/yogsottot)
+  
+### Задания со *  
+
+- В Makefile добавлены билд и публикация новых сервисов. (С версионированием)  
+- В Docker в [экспериментальном режиме](https://docs.docker.com/config/thirdparty/prometheus/) реализована отдача метрик в формате Prometheus. Добавлен сбор этих метрик в Prometheus.  
+  В ```makefile``` для команды ```create-vm``` добавлены параметры для активации данной функции докер-демона ```--engine-opt experimental --engine-opt metrics-addr=172.17.0.1:9323```  
+  Добавлена панель [Docker Engine Metrics](https://grafana.com/dashboards/1229)
+- Для сбора метрик с Docker демона также можно использовать [Telegraf от InfluxDB](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/docker). Добавлен сбор этих метрик в Prometheus. Добавлена панель ```Telegraf_Docker.json```  
+  Внесены изменения в ```docker-compose-monitoring.yml``` и ```prometheus.yml```  
+  Добавлен ```dockerfile``` и ```telegraf.conf``` в директорию ```monitoring/telegraf```  
+  Внесены записи в ```makefile```  
+- Реализован алерт, на 95 процентиль времени ответа UI. Для целей тестирования срабатывания алерта был установлено пороговое значение ```0.0050 sec```. Закоммичено со значением ```0.8 sec```
+
+  <details><summary>Срабатывание</summary><p>
+
+  ![alert](https://i.imgur.com/tKgcpik.png)
+
+  </p></details>
+
+- Настроена интеграция Alertmanager с e-mail помимо слака. Так как в GCE заблокирована возможность отсылать письма напрямую, используется сторонний smtp-сервер. В закомиченном конфиге используются заглушки. Было проведено тестирование с реальными данными.  
+  
+  <details><summary>Срабатывание</summary><p>
+
+  ![alert](https://i.imgur.com/bsMqi7M.png)
+
+  </p></details>
+
+### Задания со **  
+
+- Реализовано [автоматическое добавление](http://docs.grafana.org/administration/provisioning/) источника данных и созданных в данном ДЗ панелей в графану.  
+- Реализован сбор метрик со Stackdriver с помощью встроенного в grafana источника данных.  
+  Аутентификация в Stackdriver API происходит автоматически, так как grafana запущена внутри gce. (Должен быть [создан](http://docs.grafana.org/datasources/stackdriver/) GCE Default Service Account). Если используются утилиты gcloud, то он уже создан.  
+  В ```makefile``` для создания вм [указано](https://developers.google.com/identity/protocols/googlescopes#monitoringv3) ```--google-scopes "https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring"```  
+  Источник и панель добавлены в автопровизионинг.  
+
+### Задания со ***
+
+- Реализована схема с проксированием запросов от Grafana к Prometheus через [Trickster](https://github.com/Comcast/trickster), кеширующий прокси от Comcast. Внесены изменения в ```datasource.yaml``` и ```docker-compose-monitoring.yml```, теперь Trickster будет использоваться по умолчанию.  
