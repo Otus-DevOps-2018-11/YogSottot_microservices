@@ -15,10 +15,27 @@ services:
     image: ${USERNAME}/ui:${UI_VERSION}
     ports:
       - ${HOST_PORT}:${APP_PORT}/tcp
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.ui
     networks:
       - front_net
   post:
     image: ${USERNAME}/post:${POST_VERSION}
+    environment:
+      - POST_DATABASE_HOST=post_db
+      - POST_DATABASE=posts
+    depends_on:
+      - post_db
+    ports:
+      - "5000:5000"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.post
     networks:
       back_net:
         aliases:
@@ -28,6 +45,11 @@ services:
           - comment
   comment:
     image: ${USERNAME}/comment:${COMMENT_VERSION}
+    depends_on:
+      - post_db
+    environment:
+      - COMMENT_DATABASE_HOST=comment_db
+      - COMMENT_DATABASE=comments
     networks:
       back_net:
         aliases:
