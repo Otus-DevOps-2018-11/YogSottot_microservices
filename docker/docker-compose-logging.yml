@@ -36,6 +36,21 @@ services:
       - "5601:5601"
     environment:
       ELASTICSEARCH_URL: https://elasticsearch:9200
+  zipkin:
+    image: openzipkin/zipkin:${ZIPKIN_VERSION}
+    ports:
+      - "9411:9411"
+    #environment:
+      #- STORAGE_TYPE=elasticsearch
+      #- ES_HOSTS=https://172.17.0.1:9200
+      #- ES_HTTP_LOGGING=BODY
+    networks:
+      back_net:
+        aliases:
+          - zipkin
+      front_net:
+        aliases:
+          - zipkin
 
 volumes:
   elastic-data1:

@@ -1428,3 +1428,34 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 ### Неструктурированные логи  
 
 - Сервис ui переключен на fluentd-драйвер. Добавлено регулярное выражение для парсинга лога.  
+- Парсинг переключен на grok.  
+
+### Распределенный трейсинг  
+
+- Добавлен в compose-файл для сервисов логирования сервис распределенного трейсинга [Zipkin](https://github.com/openzipkin/zipkin)  
+
+### Задание со *  
+
+- Составлена конфигурация так, чтобы разбирались оба формата логов UI-сервиса одновременно.  
+
+  <details><summary>Добавлен grok</summary><p>
+
+  ```bash
+  
+  <grok>
+     pattern service=%{WORD:service} \| event=%{WORD:event} \| path=%{URIPATH:path} \| request_id=%{GREEDYDATA:request_id} \| remote_addr=%{IP:remote_addr} \| method= %{WORD:method} \| response_status=%{NUMBER:response_status}
+  </grok>
+
+  ```
+
+  </p></details>
+
+- Собрана и запущена [забагованная](https://github.com/express42/reddit/commits/bugged) версия приложения.  
+  «Пользователи жалуются, что при нажатии на пост они вынуждены долго ждать, пока у них загрузится страница с постом»  
+  Трейс в zipkin показывает, что ответ от сервиса ```post``` занимает 3 секунды.
+
+  <details><summary>Трейс</summary><p>
+
+  ![zipkin](https://i.imgur.com/215M96z.jpg)
+
+  </p></details>
