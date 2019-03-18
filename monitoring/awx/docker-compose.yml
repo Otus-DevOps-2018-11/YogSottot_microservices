@@ -14,9 +14,9 @@ services:
     user: root
     restart: unless-stopped
     environment:
-      http_proxy: 
-      https_proxy: 
-      no_proxy: 
+      http_proxy:
+      https_proxy:
+      no_proxy:
       SECRET_KEY: awxsecret
       DATABASE_NAME: awx
       DATABASE_USER: awx
@@ -51,9 +51,9 @@ services:
     user: root
     restart: unless-stopped
     environment:
-      http_proxy: 
-      https_proxy: 
-      no_proxy: 
+      http_proxy:
+      https_proxy:
+      no_proxy:
       SECRET_KEY: awxsecret
       DATABASE_NAME: awx
       DATABASE_USER: awx

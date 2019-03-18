@@ -12,14 +12,13 @@ throttling:
   interval: 5s
 
 rules:
-- metadata:
-    name: restart-service
-  labels:
-    alertname: ".*down"
-    service: ".*"
-  awxJob:
-    template: "Restart service"
-    extraVars:
-      node: "{{ $labels.instance }}"
-    limit:  "{{ $labels.instance }}"
-
+  - metadata:
+      name: restart-service
+    labels:
+      alertname: ".*down"
+      service: ".*"
+    awxJob:
+      template: "Restart service"
+      extraVars:
+        node: "{{ $labels.instance }}"
+      limit: "{{ $labels.instance }}"

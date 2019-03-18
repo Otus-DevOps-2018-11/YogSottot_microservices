@@ -1,0 +1,66 @@
+---
+version: '3'
+services:
+  fluentd:
+    image: ${USERNAME}/fluentd:${FLUENTD_VERSION}
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    networks:
+      back_net:
+        aliases:
+          - fluentd
+      front_net:
+        aliases:
+          - fluentd
+
+  # https://habr.com/ru/post/443528/
+  elasticsearch:
+    image: amazon/opendistro-for-elasticsearch:${ELASTIC_VERSION}
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elastic-data1:/usr/share/elasticsearch/data
+  # https://github.com/opendistro-for-elasticsearch/security-kibana-plugin/issues/1
+  kibana:
+    image: amazon/opendistro-for-elasticsearch-kibana:${KIBANA_VERSION}
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: https://elasticsearch:9200
+  zipkin:
+    image: openzipkin/zipkin:${ZIPKIN_VERSION}
+    ports:
+      - "9411:9411"
+    #environment:
+      #- STORAGE_TYPE=elasticsearch
+      #- ES_HOSTS=https://172.17.0.1:9200
+      #- ES_HTTP_LOGGING=BODY
+    networks:
+      back_net:
+        aliases:
+          - zipkin
+      front_net:
+        aliases:
+          - zipkin
+
+volumes:
+  elastic-data1:
+
+networks:
+  back_net:
+    ipam:
+      config:
+        - subnet: 10.0.2.0/24
+  front_net:
+    ipam:
+      config:
+        - subnet: 10.0.1.0/24
