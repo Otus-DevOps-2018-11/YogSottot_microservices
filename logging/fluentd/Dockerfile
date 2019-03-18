@@ -1,4 +1,4 @@
-ARG FLUENTD_VERSION=v1.4.0-debian-onbuild-1.0
+ARG FLUENTD_VERSION=v1.4.0-debian-1.0
 FROM fluent/fluentd:"${FLUENTD_VERSION}"
 
 # Use root account to use apt
