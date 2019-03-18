@@ -7,7 +7,7 @@ export $(shell sed 's/=.*//' $(cnf))
 # all
 all: create-vm build-all run-app run-monitoring
 
-logging: create-vm build-logging build-app run-logging run-app
+logging: create-vm build-logging run-logging build-app run-app
 
 # build all images
 build-all: build-app build-monitoring build-logging
