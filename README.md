@@ -1416,6 +1416,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ## ДЗ №19. Применение системы логирования в инфраструктуре на основе Docker  
 
+<details><summary>Спойлер</summary><p>
+
 - Обновлён код приложений для работы с логгированием. Пересобраны образы.  
 - Добавлен ```docker-compose-logging.yml```
 - Добавлен ```dockerfile``` для fleuntd. Собран образ.  
@@ -1459,3 +1461,31 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ![zipkin](https://i.imgur.com/215M96z.jpg)
 
   </p></details>
+
+</p></details>
+
+## ДЗ №20. Введение в Kubernetes  
+
+- Добавлены Deployment манифесты для запуска приложения в kubernetes.  
+- Пройден [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way).  
+- Проверено, что kubectl apply -f проходит по созданным до этого deployment-ам (ui, post, mongo, comment) и поды запускаются.
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >kubectl get pods -o wide
+  NAME                                  READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE
+  busybox-bd8fb7cbd-b5f2g               1/1     Running   0          28m   10.200.1.2   worker-1   <none>
+  comment-deployment-7777959867-zxhp7   1/1     Running   0          28s   10.200.0.4   worker-0   <none>
+  mongo-deployment-6895dffdf4-v22qr     1/1     Running   0          40s   10.200.2.3   worker-2   <none>
+  nginx-dbddb74b8-b6g4x                 1/1     Running   0          16m   10.200.1.3   worker-1   <none>
+  post-deployment-7b4b7fbd47-5wnds      1/1     Running   0          24s   10.200.2.4   worker-2   <none>
+  ui-deployment-57d4fdf999-pptkt        1/1     Running   0          20s   10.200.1.4   worker-1   <none>
+  untrusted                             1/1     Running   0          10m   10.200.0.3   worker-0   <none>
+
+  ```
+
+  </p></details>
+
+- Все созданные в ходе прохождения THW файлы (кроме бинарных) помещены в папку kubernetes/the_hard_way.  
