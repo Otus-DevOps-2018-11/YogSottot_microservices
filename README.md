@@ -1466,6 +1466,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ## ДЗ №20. Введение в Kubernetes  
 
+<details><summary>Спойлер</summary><p>
+
 - Добавлены Deployment манифесты для запуска приложения в kubernetes.  
 - Пройден [Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way).  
 - Проверено, что kubectl apply -f проходит по созданным до этого deployment-ам (ui, post, mongo, comment) и поды запускаются.
@@ -1489,3 +1491,173 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   </p></details>
 
 - Все созданные в ходе прохождения THW файлы (кроме бинарных) помещены в папку kubernetes/the_hard_way.  
+
+</p></details>
+
+## ДЗ №21.  Основные модели безопасности и контроллеры в Kubernetes  
+
+### Разворачиваем Kubernetes локально  
+
+- Установлен kibectl ```gcloud components install kubectl```  
+- Установлен minikube и запущен кластер ```minikube start --kubernetes-version=1.13.4```  
+- Проверено, что узел доступен. ```kubectl get nodes```  
+- Проверено содержимое ```~/.kube/config```
+- Запущен компонет ```ui```  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+  >kubectl apply -f ui-deployment.yml
+  deployment.apps/ui created
+
+  >kubectl get deployment
+  NAME      READY     UP-TO-DATE   AVAILABLE   AGE
+  ui        3/3       3            3           2m8s
+
+  ```
+
+  </p></details>
+
+- Получен список подов и проброшен порт. Проверено, что ```ui``` открывается по адресу <http://localhost:8080/>
+
+  <details><summary>Проброс порта</summary><p>
+
+  ```bash
+
+  >kubectl get pods --selector component=ui
+  NAME                  READY     STATUS    RESTARTS   AGE
+  ui-698846c768-t9l4r   1/1       Running   0          3m21s
+  ui-698846c768-vgbgr   1/1       Running   0          3m21s
+  ui-698846c768-wk2tt   1/1       Running   0          3m21s
+
+  >kubectl port-forward ui-698846c768-t9l4r 8080:9292
+  Forwarding from 127.0.0.1:8080 -> 9292
+  Forwarding from [::1]:8080 -> 9292
+  Handling connection for 8080
+
+  ```
+
+  </p></details>
+
+- Аналогично сделано с компонентами comment и post  
+  
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >kubectl get all
+  NAME                           READY     STATUS    RESTARTS   AGE
+  pod/comment-7d84bb9d8b-jw86c   1/1       Running   0          15m
+  pod/comment-7d84bb9d8b-ldfcq   1/1       Running   0          15m
+  pod/comment-7d84bb9d8b-w98cw   1/1       Running   0          15m
+  pod/post-54c79dc7d6-4h9sk      1/1       Running   0          12m
+  pod/post-54c79dc7d6-jlmtt      1/1       Running   0          12m
+  pod/post-54c79dc7d6-n97mn      1/1       Running   0          12m
+  pod/ui-698846c768-t9l4r        1/1       Running   0          25m
+  pod/ui-698846c768-vgbgr        1/1       Running   0          25m
+  pod/ui-698846c768-wk2tt        1/1       Running   0          25m
+  
+  NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+  service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   45m
+  
+  NAME                      READY     UP-TO-DATE   AVAILABLE   AGE
+  deployment.apps/comment   3/3       3            3           15m
+  deployment.apps/post      3/3       3            3           12m
+  deployment.apps/ui        3/3       3            3           25m
+  
+  NAME                                 DESIRED   CURRENT   READY     AGE
+  replicaset.apps/comment-7d84bb9d8b   3         3         3         15m
+  replicaset.apps/post-54c79dc7d6      3         3         3         12m
+  replicaset.apps/ui-698846c768        3         3         3         25m
+
+  ```
+
+  </p></details>
+
+- Добавлен mongo и указан volume для него  
+- Добавлены services для компонентов comment и post  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >kubectl apply -f post-
+  post-deployment.yml  post-service.yml
+
+  >kubectl apply -f post-service.yml
+  service/post created
+
+  >kubectl describe service post
+  Name:              post
+  Namespace:         default
+  Labels:            app=reddit
+                     component=post
+  Annotations:       kubectl.kubernetes.io/last-applied-configuration={"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"reddit","component":"post"},"name":"post","namespace":"default"},"spe...
+  Selector:          app=reddit,component=post
+  Type:              ClusterIP
+  IP:                10.97.115.52
+  Port:              <unset>  5000/TCP
+  TargetPort:        5000/TCP
+  Endpoints:         <none>
+  Session Affinity:  None
+  Events:            <none>
+  
+  >kubectl exec -ti comment-7d84bb9d8b-ldfcq nslookup post
+  nslookup: can't resolve '(null)': Name does not resolve
+  
+  Name:      post
+  Address 1: 10.97.115.52 post.default.svc.cluster.local
+
+  ```
+
+  </p></details>
+
+- Добавлены переменные окружения для доступа к бд у компонентов ```comment``` и ```post```  
+- Добавлен ```NodePort``` для ```ui```, проверено, что приложение работает. ```minikube service ui```
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >minikube service list
+  |-------------|------------|-----------------------------|
+  |  NAMESPACE  |    NAME    |             URL             |
+  |-------------|------------|-----------------------------|
+  | default     | comment    | No node port                |
+  | default     | comment-db | No node port                |
+  | default     | kubernetes | No node port                |
+  | default     | post       | No node port                |
+  | default     | post-db    | No node port                |
+  | default     | ui         | http://192.168.99.100:32092 |
+  | kube-system | kube-dns   | No node port                |
+  |-------------|------------|-----------------------------|
+
+  ```
+
+  </p></details>
+
+- Активирован и [открыт dashboard](https://github.com/kubernetes/minikube/pull/4009/files#diff-04c6e90faac2675aa89e2176d2eec7d8R114) ```minikube dashboard```  
+- Добавлен ```dev``` namespace, приложение запущено в новом namespace. ```kubectl apply -n dev -f .```
+
+### Разворачиваем Google Kubernetes Engine
+
+- Создан кластер в GKE
+
+  <details><summary>Создание</summary><p>
+
+  ```bash
+
+  gcloud beta container --project "docker-231609" clusters create "reddit-cluster-1" --zone "europe-north1-b" --no-enable-basic-auth --cluster-version "1.12.5-gke.5" --machine-type "g1-small" --image-type "COS" --disk-type "pd-standard" --disk-size "20" --metadata disable-legacy-endpoints=true --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" --num-nodes "2" --no-enable-cloud-logging --no-enable-cloud-monitoring --no-enable-ip-alias --network "projects/docker-231609/global/networks/default" --subnetwork "projects/docker-231609/regions/europe-north1/subnetworks/default" --addons HorizontalPodAutoscaling,HttpLoadBalancing --enable-autoupgrade --enable-autorepair
+
+  ```
+
+  </p></details>
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+
+  ```
+
+  </p></details>
