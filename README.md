@@ -1641,22 +1641,143 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ### Разворачиваем Google Kubernetes Engine
 
-- Создан кластер в GKE
+- Создан кластер в GKE и обновлена конфигурация kubectl
 
   <details><summary>Создание</summary><p>
 
   ```bash
 
-  gcloud beta container --project "docker-231609" clusters create "reddit-cluster-1" --zone "europe-north1-b" --no-enable-basic-auth --cluster-version "1.12.5-gke.5" --machine-type "g1-small" --image-type "COS" --disk-type "pd-standard" --disk-size "20" --metadata disable-legacy-endpoints=true --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" --num-nodes "2" --no-enable-cloud-logging --no-enable-cloud-monitoring --no-enable-ip-alias --network "projects/docker-231609/global/networks/default" --subnetwork "projects/docker-231609/regions/europe-north1/subnetworks/default" --addons HorizontalPodAutoscaling,HttpLoadBalancing --enable-autoupgrade --enable-autorepair
+  >gcloud beta container --project "docker-231609" clusters create "reddit-cluster-1" --zone "europe-north1-b" --no-enable-basic-auth --cluster-version "1.12.5-gke.5" --machine-type "g1-small" --image-type "COS" --disk-type "pd-standard" --disk-size "20" --metadata disable-legacy-endpoints=true --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" --num-nodes "2" --no-enable-cloud-logging --no-enable-cloud-monitoring --no-enable-ip-alias --network "projects/docker-231609/global/networks/default" --subnetwork "projects/docker-231609/regions/europe-north1/subnetworks/default" --addons HorizontalPodAutoscaling,HttpLoadBalancing --enable-autoupgrade --enable-autorepair
+
+  kubeconfig entry generated for reddit-cluster-1.
+  NAME              LOCATION         MASTER_VERSION  MASTER_IP      MACHINE_TYPE  NODE_VERSION  NUM_NODES  STATUS
+  reddit-cluster-1  europe-north1-b  1.12.5-gke.5    35.228.106.90  g1-small      1.12.5-gke.5  2          RUNNING
+
+  >gcloud container clusters get-credentials reddit-cluster-1 --zone europe-north1-b --project docker-231609
+
+  >kubectl config current-context
+  gke_docker-231609_europe-north1-b_reddit-cluster-1
 
   ```
 
   </p></details>
 
+- Создан dev namespace и задеплоены все компоненты приложения в namespace dev  
+
   <details><summary>Проверка</summary><p>
 
   ```bash
 
+  > kubectl apply -f ./kubernetes/reddit/dev-namespace.yml
+  namespace/dev created
+
+  >kubectl apply -f ./kubernetes/reddit/ -n dev
+  deployment.apps/comment created
+  service/comment-db created
+  service/comment created
+  namespace/dev unchanged
+  deployment.apps/mongo created
+  service/mongodb created
+  deployment.apps/post created
+  service/post-db created
+  service/post created
+  deployment.apps/ui created
+  service/ui created
+
+  ```
+
+  </p></details>
+
+- Добавлено правило firewall для kubernetes  
+
+  <details><summary>Правило</summary><p>
+
+  ```bash
+
+  gcloud compute --project=docker-231609 firewall-rules create reddit-kubernetes --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:30000-32767 --source-ranges=0.0.0.0/0
+
+  ```
+
+  </p></details>
+
+- Найден ip и порт сервиса ui. Проверено, что приложение работает корректно.
+
+  <details><summary>Команды</summary><p>
+
+  ```bash
+
+  >kubectl get nodes -o wide
+  NAME                                              STATUS   ROLES    AGE   VERSION         INTERNAL-IP   EXTERNAL-IP     OS-IMAGE                             KERNEL-VERSION   CONTAINER-RUNTIME
+  gke-reddit-cluster-1-default-pool-74dbd5d5-d5nm   Ready    <none>   15m   v1.12.5-gke.5   10.166.0.40   35.228.53.133   Container-Optimized OS from Google   4.14.89+         docker://17.3.2
+  gke-reddit-cluster-1-default-pool-74dbd5d5-t07t   Ready    <none>   15m   v1.12.5-gke.5   10.166.0.41   35.228.178.92   Container-Optimized OS from Google   4.14.89+         docker://17.3.2
+
+  >kubectl describe service ui -n dev | grep NodePort
+  Type:                     NodePort
+  NodePort:                 <unset>  31750/TCP
+
+  ```
+
+  </p></details>
+
+  <details><summary>Скриншот</summary><p>
+
+  ![reddit](https://i.imgur.com/CzR0enj.png)
+
+  </p></details>
+
+- Включен dashboard. Для Service Account назначена роль с достаточными правами на просмотр информации о кластере  
+
+  <details><summary>Команда</summary><p>
+
+  ```bash
+
+  kubectl create clusterrolebinding kubernetes-dashboard  --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
+
+  ```
+
+  </p></details>
+
+- Проверено, что dashboard работает  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+  >kubectl proxy
+
+  ```
+
+  <http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/login>
+
+  ![reddit](https://i.imgur.com/kTGw2Uk.png)
+
+  </p></details>
+
+### Задание *
+
+- Развернут Kubenetes-кластер в GKE с помощью [Terraform](https://www.terraform.io/docs/providers/google/r/container_cluster.html)  
+  Конфиг в директории ```kubernetes/terraform```  
+  После создания кластера автоматически производится развёртывание приложения.  
+  ```cd kubernetes/terraform && terraform get && terraform init && terraform apply -auto-approve=true```
+- Получен YAML-манифест для добавления прав на использование dashboard с помощью команды  
+  ```kubectl create clusterrolebinding kubernetes-dashboard  --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard -o yaml --dry-run```
+
+  <details><summary>Манифест</summary><p>
+
+  ```bash
+
+  apiVersion: rbac.authorization.k8s.io/v1beta1
+  kind: ClusterRoleBinding
+  metadata:
+    creationTimestamp: null
+    name: kubernetes-dashboard
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: cluster-admin
+  subjects:
+  - kind: ServiceAccount
+    name: kubernetes-dashboard
+    namespace: kube-system
 
   ```
 
