@@ -1,3 +1,4 @@
+---
 kind: EncryptionConfig
 apiVersion: v1
 resources:
