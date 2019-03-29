@@ -1970,3 +1970,16 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   </p></details>
   
   - Добавлен ```mongo-network-policy.yml```. В манифест добавлен сервис post  
+
+### Volume
+
+- Cоздан пост в приложении  
+- Удалён deployment для mongo  
+  ```kubectl delete deploy/mongo -n dev```
+- Пост исчез. Пост создан заново.
+- Создан диск в gce  
+  ```gcloud compute disks create --size=25GB --zone=europe-north1-b reddit-mongo-disk```  
+- Добавлен новый Volume POD-у базы  
+- Создан пост после пересоздания пода  
+- Удалён и создан deployment mongo  
+- Созданный пост сохранился  
