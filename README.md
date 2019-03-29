@@ -1887,3 +1887,17 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ```
 
   </p></details>
+
+- Проверено, что встроенный ingress HTTP load balancing активирован в настройках gce. Создан Ingress для сервиса UI  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >kubectl get ingress -n dev
+  NAME   HOSTS   ADDRESS         PORTS   AGE
+  ui     *       35.227.251.95   80      10m
+
+  ```
+
+  </p></details>
