@@ -1928,3 +1928,13 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ```
 
   </p></details>
+
+- Ingress настроен на прием только HTTPS траффика  
+  Пересозданы правила. Првоерно ,что приложение достпупно по https  
+  ```kubectl delete ingress ui -n dev```  
+  ```kubectl apply -f ui-ingress.yml -n dev```
+
+#### Задание со*
+
+- Описан создаваемый объект Secret в виде Kubernetes-манифеста.
+  Использована команда ```kubectl create secret tls ui-ingress --key tls.key --cert tls.crt -n dev -o yaml --dry-run >  ui-ingress-secret.yml```  

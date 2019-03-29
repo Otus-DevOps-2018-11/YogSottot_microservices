@@ -168,4 +168,4 @@ cluster-destroy:
 	cd kubernetes/terraform && terraform destroy -auto-approve=true
 
 cluster-get-ip:
-	kubectl get nodes -o wide && kubectl describe service ui -n dev | grep NodePort
+	kubectl get ingress -n dev
