@@ -169,3 +169,6 @@ cluster-destroy:
 
 cluster-get-ip:
 	kubectl get ingress -n dev | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'
+
+cluster-gen-secret:
+	kubectl get ingress -n dev | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}' | ./kubernetes/terraform/files/ingress_ip.sh -
