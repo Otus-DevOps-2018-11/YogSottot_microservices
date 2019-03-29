@@ -48,6 +48,10 @@ resource "google_container_cluster" "primary" {
     kubernetes_dashboard {
       disabled = false
     }
+
+    network_policy_config {
+      disabled = false
+    }
   }
 
   #  ip_allocation_policy {

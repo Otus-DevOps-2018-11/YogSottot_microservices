@@ -1938,3 +1938,35 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 - Описан создаваемый объект Secret в виде Kubernetes-манифеста.
   Использована команда ```kubectl create secret tls ui-ingress --key tls.key --cert tls.crt -n dev -o yaml --dry-run >  ui-ingress-secret.yml```  
+
+### Network Policy
+
+- Найдено имя кластера  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  gcloud beta container clusters list
+  NAME         LOCATION         MASTER_VERSION  MASTER_IP      MACHINE_TYPE  NODE_VERSION   NUM_NODES  STATUS
+  reddit-test  europe-north1-b  1.11.7-gke.12   35.228.109.72  g1-small      1.11.7-gke.12  2          RUNNING
+  
+  ```
+
+  </p></details>
+
+- Включен network-policy для GKE  
+
+  <details><summary>Включение</summary><p>
+
+  ```bash
+
+  gcloud beta container clusters update reddit-test --zone=europe-north1-b --update-addons=NetworkPolicy=ENABLED
+  gcloud beta container clusters update reddit-test --zone=europe-north1-b  --enable-network-policy
+
+
+  ```
+
+  </p></details>
+  
+  - Добавлен ```mongo-network-policy.yml```. В манифест добавлен сервис post  
