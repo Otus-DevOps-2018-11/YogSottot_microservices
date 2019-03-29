@@ -1888,7 +1888,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
   </p></details>
 
-- Проверено, что встроенный ingress HTTP load balancing активирован в настройках gce. Создан Ingress для сервиса UI  
+- Проверено, что встроенный ingress HTTP load balancing активирован в настройках gce. Создан Ingress для сервиса UI. Приложение доступно по обоим ip адресам  
 
   <details><summary>Проверка</summary><p>
 
@@ -1897,6 +1897,33 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   >kubectl get ingress -n dev
   NAME   HOSTS   ADDRESS         PORTS   AGE
   ui     *       35.227.251.95   80      10m
+
+  ```
+
+  </p></details>
+
+- Убран LoadBalancer из ```ui-service.yml``` и изменены настройки ingress. Приложение доступно  
+- Подготовлен сертификат используя IP как CN  
+  ```openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=35.227.251.95"```  
+- Сертификат загружен в кластер kubernetes
+  ```kubectl create secret tls ui-ingress --key tls.key --cert tls.crt -n dev```
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >kubectl describe secret ui-ingress -n dev 
+  Name:         ui-ingress
+  Namespace:    dev
+  Labels:       <none>
+  Annotations:  <none>
+  
+  Type:  kubernetes.io/tls
+  
+  Data
+  ====
+  tls.crt:  1123 bytes
+  tls.key:  1704 bytes
 
   ```
 
