@@ -1969,7 +1969,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
   </p></details>
   
-  - Добавлен ```mongo-network-policy.yml```. В манифест добавлен сервис post  
+- Добавлен ```mongo-network-policy.yml```. В манифест добавлен сервис post  
 
 ### Volume
 
@@ -1993,7 +1993,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 ### Динамическое выделение Volume  
 
 - Создано описание StorageClass’а ```storage-fast.yml```  
-- Создадим новое описание PersistentVolumeClaim ```mongo-claim-dynamic.yml```  
+- Создано новое описание PersistentVolumeClaim ```mongo-claim-dynamic.yml```  
 - Подключен новый PVC к Pod'ам  
 
   <details><summary>Проверка</summary><p>
