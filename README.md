@@ -1934,7 +1934,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ```kubectl delete ingress ui -n dev```  
   ```kubectl apply -f ui-ingress.yml -n dev```
 
-#### Задание со*
+#### Задание со *  
 
 - Описан создаваемый объект Secret в виде Kubernetes-манифеста.
   Использована команда ```kubectl create secret tls ui-ingress --key tls.key --cert tls.crt -n dev -o yaml --dry-run >  ui-ingress-secret.yml```  
@@ -1983,3 +1983,29 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 - Создан пост после пересоздания пода  
 - Удалён и создан deployment mongo  
 - Созданный пост сохранился  
+
+### PersistentVolume  
+
+- Создано описание PersistentVolume в ```mongo-volume.yml```  
+- Создано описание PersistentVolumeClaim (PVC) в ```mongo-claim.yml```  
+- Подключен PVC к Pod'ам  
+
+### Динамическое выделение Volume  
+
+- Создано описание StorageClass’а ```storage-fast.yml```  
+- Создадим новое описание PersistentVolumeClaim ```mongo-claim-dynamic.yml```  
+- Подключен новый PVC к Pod'ам  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >kubectl get persistentvolume -n dev
+  NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM                   STORAGECLASS   REASON   AGE
+  pvc-a71be415-5222-11e9-a359-42010aa60071   10Gi       RWO            Delete           Bound       dev/mongo-pvc-dynamic   fast                    4m
+  pvc-f84aa3b2-521f-11e9-a359-42010aa60071   15Gi       RWO            Delete           Bound       dev/mongo-pvc           standard                23m
+  reddit-mongo-disk                          25Gi       RWO            Retain           Available
+
+  ```
+
+  </p></details>
