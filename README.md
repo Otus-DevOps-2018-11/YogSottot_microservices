@@ -1496,6 +1496,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ## ДЗ №21.  Основные модели безопасности и контроллеры в Kubernetes  
 
+<details><summary>Спойлер</summary><p>
+
 ### Разворачиваем Kubernetes локально  
 
 - Установлен kibectl ```gcloud components install kubectl```  
@@ -1778,6 +1780,231 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   - kind: ServiceAccount
     name: kubernetes-dashboard
     namespace: kube-system
+
+  ```
+
+  </p></details>
+
+</p></details>
+
+## ДЗ №22. Ingress-контроллеры и сервисы в Kubernetes  
+
+### Сетевое взаимодействие  
+
+- Проскейлен в 0 сервис, который следит, чтобы dns-kube подов всегда хватало  
+  ```kubectl scale deployment --replicas 0 -n kube-system kube-dns-autoscaler```
+- Проскейлен в 0 сам kube-dns  
+  ```kubectl scale deployment --replicas 0 -n kube-system kube-dns```
+- Попробовано достучаться по имени до любого сервиса  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+  >kubectl get po -n dev
+    NAME                       READY   STATUS    RESTARTS   AGE
+  comment-65ffd8db88-57q2f   1/1     Running   0          13m
+  comment-65ffd8db88-chsvf   1/1     Running   0          13m
+  comment-65ffd8db88-zgxxz   1/1     Running   0          13m
+  mongo-766f4648c7-b7f7h     1/1     Running   0          13m
+  post-857cf8687b-4nvnp      1/1     Running   0          13m
+  post-857cf8687b-grz42      1/1     Running   0          13m
+  post-857cf8687b-rzdrn      1/1     Running   0          13m
+  ui-6d56d45fbd-mcdpg        1/1     Running   0          13m
+  ui-6d56d45fbd-r7jgv        1/1     Running   0          13m
+  ui-6d56d45fbd-x7pk2        1/1     Running   0          13m
+  
+  >kubectl exec -ti -n dev post-857cf8687b-4nvnp ping comment
+  ping: bad address 'comment'
+  command terminated with exit code 1
+
+  ```
+
+  Приложение при этом продолжало работать, можно было создавать новые посты и комментарии к постам.  
+
+  ```bash
+
+  >kubectl get  deployment -n kube-system
+  NAME                     DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+  event-exporter-v0.2.3    1         1         1            1           20m
+  fluentd-gcp-scaler       1         1         1            1           20m
+  heapster-v1.6.0-beta.1   1         1         1            1           20m
+  kube-dns                 0         0         0            0           20m
+  kube-dns-autoscaler      0         0         0            0           20m
+  kubernetes-dashboard     1         1         1            1           20m
+  l7-default-backend       1         1         1            1           20m
+  metrics-server-v0.2.1    1         1         1            1           20m
+
+  ```
+
+  </p></details>
+
+- Возвращён kube-dns-autoscale в исходную.  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+  >kubectl scale deployment --replicas 1 -n kube-system kube-dns-autoscaler
+
+  >kubectl get  deployment -n kube-system
+  NAME                     DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+  event-exporter-v0.2.3    1         1         1            1           25m
+  fluentd-gcp-scaler       1         1         1            1           25m
+  heapster-v1.6.0-beta.1   1         1         1            1           25m
+  kube-dns                 2         2         2            2           25m
+  kube-dns-autoscaler      1         1         1            1           25m
+  kubernetes-dashboard     1         1         1            1           25m
+  l7-default-backend       1         1         1            1           25m
+  metrics-server-v0.2.1    1         1         1            1           25m
+
+  >kubectl exec -ti -n dev post-857cf8687b-4nvnp ping comment
+  PING comment (10.47.245.155): 56 data bytes
+  ^C
+  --- comment ping statistics ---
+  5 packets transmitted, 0 packets received, 100% packet loss
+  command terminated with exit code 1
+
+  ```
+
+  </p></details>
+
+- Изменён тип ```ui-service``` на LoadBalancer. Пересоздан сервис. Проверено, что сервис доступен по ip балансирвщика на порте 80  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >kubectl apply -f kubernetes/reddit/ui-service.yml -n dev
+  service/ui configured
+
+  >kubectl get service  -n dev --selector component=ui
+  NAME   TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+  ui     LoadBalancer   10.47.240.195   <pending>     80:31486/TCP   50m
+
+  >kubectl get service  -n dev --selector component=ui
+  NAME   TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)        AGE
+  ui     LoadBalancer   10.47.240.195   35.228.237.45   80:31486/TCP   51m
+
+  ```
+
+  </p></details>
+
+- Проверено, что встроенный ingress HTTP load balancing активирован в настройках gce. Создан Ingress для сервиса UI. Приложение доступно по обоим ip адресам  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >kubectl get ingress -n dev
+  NAME   HOSTS   ADDRESS         PORTS   AGE
+  ui     *       35.227.251.95   80      10m
+
+  ```
+
+  </p></details>
+
+- Убран LoadBalancer из ```ui-service.yml``` и изменены настройки ingress. Приложение доступно  
+- Подготовлен сертификат используя IP как CN  
+  ```openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=35.227.251.95"```  
+- Сертификат загружен в кластер kubernetes
+  ```kubectl create secret tls ui-ingress --key tls.key --cert tls.crt -n dev```
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >kubectl describe secret ui-ingress -n dev 
+  Name:         ui-ingress
+  Namespace:    dev
+  Labels:       <none>
+  Annotations:  <none>
+  
+  Type:  kubernetes.io/tls
+  
+  Data
+  ====
+  tls.crt:  1123 bytes
+  tls.key:  1704 bytes
+
+  ```
+
+  </p></details>
+
+- Ingress настроен на прием только HTTPS траффика  
+  Пересозданы правила. Првоерно ,что приложение достпупно по https  
+  ```kubectl delete ingress ui -n dev```  
+  ```kubectl apply -f ui-ingress.yml -n dev```
+
+#### Задание со *  
+
+- Описан создаваемый объект Secret в виде Kubernetes-манифеста.
+  Использована команда ```kubectl create secret tls ui-ingress --key tls.key --cert tls.crt -n dev -o yaml --dry-run >  ui-ingress-secret.yml```  
+
+### Network Policy
+
+- Найдено имя кластера  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  gcloud beta container clusters list
+  NAME         LOCATION         MASTER_VERSION  MASTER_IP      MACHINE_TYPE  NODE_VERSION   NUM_NODES  STATUS
+  reddit-test  europe-north1-b  1.11.7-gke.12   35.228.109.72  g1-small      1.11.7-gke.12  2          RUNNING
+  
+  ```
+
+  </p></details>
+
+- Включен network-policy для GKE  
+
+  <details><summary>Включение</summary><p>
+
+  ```bash
+
+  gcloud beta container clusters update reddit-test --zone=europe-north1-b --update-addons=NetworkPolicy=ENABLED
+  gcloud beta container clusters update reddit-test --zone=europe-north1-b  --enable-network-policy
+
+
+  ```
+
+  </p></details>
+  
+- Добавлен ```mongo-network-policy.yml```. В манифест добавлен сервис post  
+
+### Volume
+
+- Cоздан пост в приложении  
+- Удалён deployment для mongo  
+  ```kubectl delete deploy/mongo -n dev```
+- Пост исчез. Пост создан заново.
+- Создан диск в gce  
+  ```gcloud compute disks create --size=25GB --zone=europe-north1-b reddit-mongo-disk```  
+- Добавлен новый Volume POD-у базы  
+- Создан пост после пересоздания пода  
+- Удалён и создан deployment mongo  
+- Созданный пост сохранился  
+
+### PersistentVolume  
+
+- Создано описание PersistentVolume в ```mongo-volume.yml```  
+- Создано описание PersistentVolumeClaim (PVC) в ```mongo-claim.yml```  
+- Подключен PVC к Pod'ам  
+
+### Динамическое выделение Volume  
+
+- Создано описание StorageClass’а ```storage-fast.yml```  
+- Создано новое описание PersistentVolumeClaim ```mongo-claim-dynamic.yml```  
+- Подключен новый PVC к Pod'ам  
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >kubectl get persistentvolume -n dev
+  NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM                   STORAGECLASS   REASON   AGE
+  pvc-a71be415-5222-11e9-a359-42010aa60071   10Gi       RWO            Delete           Bound       dev/mongo-pvc-dynamic   fast                    4m
+  pvc-f84aa3b2-521f-11e9-a359-42010aa60071   15Gi       RWO            Delete           Bound       dev/mongo-pvc           standard                23m
+  reddit-mongo-disk                          25Gi       RWO            Retain           Available
 
   ```
 

@@ -3,6 +3,7 @@ variables.json
 *.tfstate.*.backup
 *.tfstate.backup
 *.tfvars
+*.lock.info
 .terraform/
 cache/
 .gce_cache/

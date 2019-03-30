@@ -160,3 +160,15 @@ down-monitoring:
 # show env
 show-env:
 	docker-machine env docker-host
+
+cluster-run:
+	cd kubernetes/terraform && terraform get && terraform init && terraform apply -auto-approve=true
+
+cluster-destroy:
+	cd kubernetes/terraform && terraform destroy -auto-approve=true
+
+cluster-get-ip:
+	kubectl get ingress -n dev | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}'
+
+cluster-gen-secret:
+	kubectl get ingress -n dev | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}' | ./kubernetes/terraform/files/ingress_ip.sh -
