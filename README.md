@@ -1789,6 +1789,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ## ДЗ №22. Ingress-контроллеры и сервисы в Kubernetes  
 
+<details><summary>Спойлер</summary><p>
+
 ### Сетевое взаимодействие  
 
 - Проскейлен в 0 сервис, который следит, чтобы dns-kube подов всегда хватало  
@@ -2005,6 +2007,135 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   pvc-a71be415-5222-11e9-a359-42010aa60071   10Gi       RWO            Delete           Bound       dev/mongo-pvc-dynamic   fast                    4m
   pvc-f84aa3b2-521f-11e9-a359-42010aa60071   15Gi       RWO            Delete           Bound       dev/mongo-pvc           standard                23m
   reddit-mongo-disk                          25Gi       RWO            Retain           Available
+
+  ```
+
+  </p></details>
+
+</p></details>
+
+## ДЗ №23. Интеграция Kubernetes в GitlabCI  
+
+### Работа с Helm  
+
+- Добавлен манифест для tiller  
+  
+  <details><summary>Инициализация</summary><p>
+
+  ```bash
+
+  >helm init --service-account tiller
+  Creating ~/.helm
+  Creating ~/.helm/repository
+  Creating ~/.helm/repository/cache
+  Creating ~/.helm/repository/local
+  Creating ~/.helm/plugins
+  Creating ~/.helm/starters
+  Creating ~/.helm/cache/archive
+  Creating ~/.helm/repository/repositories.yaml
+  Adding stable repo with URL: https://kubernetes-charts.storage.googleapis.com
+  Adding local repo with URL: http://127.0.0.1:8879/charts
+  $HELM_HOME has been configured at ~/.helm.
+  
+  Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
+  
+  Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
+  To prevent this, run `helm init` with the --tiller-tls-verify flag.
+  For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
+  Happy Helming!
+
+  >kubectl get pods -n kube-system --selector app=helm
+
+  NAME                             READY     STATUS    RESTARTS   AGE
+  tiller-deploy-54fc6d9ccc-wt78t   1/1       Running   0          2m
+
+  ```
+
+  </p></details>
+
+- Добавлены директории для charts. Развёрнуто приложение ui  
+
+   <details><summary>Развёртывание</summary><p>
+
+  ```bash
+
+  >helm install --name test-ui-1 ui/
+  NAME:   test-ui-1
+  LAST DEPLOYED: Sat Apr  6 15:54:56 2019
+  NAMESPACE: default
+  STATUS: DEPLOYED
+  
+  RESOURCES:
+  ==> v1/Pod(related)
+  NAME                 READY  STATUS             RESTARTS  AGE
+  ui-6d56d45fbd-5mhwb  0/1    ContainerCreating  0         0s
+  ui-6d56d45fbd-g5j5r  0/1    ContainerCreating  0         0s
+  ui-6d56d45fbd-tbrkc  0/1    ContainerCreating  0         0s
+  
+  ==> v1/Secret
+  NAME        TYPE               DATA  AGE
+  ui-ingress  kubernetes.io/tls  2     0s
+  
+  ==> v1/Service
+  NAME  TYPE      CLUSTER-IP    EXTERNAL-IP  PORT(S)         AGE
+  ui    NodePort  10.47.248.78  <none>       9292:31330/TCP  0s
+  
+  ==> v1beta1/Ingress
+  NAME  HOSTS  ADDRESS  PORTS  AGE
+  ui    *      80, 443  0s
+  
+  ==> v1beta2/Deployment
+  NAME  READY  UP-TO-DATE  AVAILABLE  AGE
+  ui    0/3    3           0          0s
+
+  > helm ls
+  NAME            REVISION        UPDATED                         STATUS          CHART           APP VERSION     NAMESPACE
+  test-ui-1       1               Sat Apr  6 15:54:56 2019        DEPLOYED        ui-1.0.0        1               default
+
+  ```
+
+  </p></details>
+
+- Шаблонизированы манифесты. Запущено несколько копий ui с помощью шаблонов.
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >helm install ui --name ui-1
+  >helm install ui --name ui-2
+  >helm install ui --name ui-3
+
+  >helm ls
+  NAME    REVISION        UPDATED                         STATUS          CHART           APP VERSION     NAMESPACE
+  ui-1    1               Sat Apr  6 16:16:50 2019        DEPLOYED        ui-1.0.0        1               default  
+  ui-2    1               Sat Apr  6 16:17:04 2019        DEPLOYED        ui-1.0.0        1               default  
+  ui-3    1               Sat Apr  6 16:17:07 2019        DEPLOYED        ui-1.0.0        1               default 
+
+  >kubectl get ingress
+  NAME      HOSTS     ADDRESS         PORTS     AGE
+  ui-1-ui   *         35.227.251.95   80        3m
+  ui-2-ui   *         35.190.70.87    80        3m
+  ui-3-ui   *         35.227.240.108  80        3m
+
+
+  ```
+
+  </p></details>
+
+- Добавлены шаблоны для comment и post  
+- Создан файл ```_helpers.tpl``` в папках ```templates``` сервисов ```ui```, ```post``` и ```comment```  
+- Всталена функция ```<service>.fullname``` в каждый ```_helpers.tpl``` файл. ```<service>``` замененён на имя чарта соотв. сервиса  
+- В каждом из шаблонов манифестов функция вставлена там, где это требуется  
+
+- Создан единый Chart ```reddit```, который объединит компоненты приложения  
+
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+
 
   ```
 

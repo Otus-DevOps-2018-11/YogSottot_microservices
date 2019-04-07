@@ -65,7 +65,7 @@ resource "google_container_cluster" "primary" {
     update = "40m"
   }
   provisioner "local-exec" {
-    command = "gcloud container clusters get-credentials ${var.cluster_name} --zone ${var.zone} --project ${var.project} && files/deploy.sh"
+    command = "gcloud container clusters get-credentials ${var.cluster_name} --zone ${var.zone} --project ${var.project}" #&& files/deploy.sh"
   }
 }
 
