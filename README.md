@@ -2125,7 +2125,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 - Добавлены шаблоны для comment и post  
 - Создан файл ```_helpers.tpl``` в папках ```templates``` сервисов ```ui```, ```post``` и ```comment```  
-- Всталена функция ```<service>.fullname``` в каждый ```_helpers.tpl``` файл. ```<service>``` замененён на имя чарта соотв. сервиса  
+- Вставлена функция ```<service>.fullname``` в каждый ```_helpers.tpl``` файл. ```<service>``` замененён на имя чарта соотв. сервиса  
 - В каждом из шаблонов манифестов функция вставлена там, где это требуется  
 
 - Создан единый Chart ```reddit```, который объединит компоненты приложения, запущено приложение  
@@ -2204,8 +2204,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 - Связаны пайплайны сборки образов и пайплайн деплоя на staging и production так, чтобы после релиза образа из ветки мастер - запускался деплой уже новой версии приложения на staging  
   Использован механизм [Pipeline triggers](https://gitlab.com/help/ci/triggers/README)  
-  В проекте ```reddit-deploy``` добавлен с вызовом триггера  
-  В проектах ```post```, ```ui```, ```comment``` в ```gitlab-ci``` добавлен блок с триггером  
+  В проекте ```reddit-deploy``` добавлен триггер  
+  В проектах ```post```, ```ui```, ```comment``` в ```gitlab-ci``` добавлен блок с вызовом триггера  
 
   <details><summary>Код</summary><p>
 
