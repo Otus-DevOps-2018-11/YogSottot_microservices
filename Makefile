@@ -36,7 +36,7 @@ build-reddit-comment:
 
 # build reddit-post
 build-reddit-post:
-	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/post src/post-py/
+	eval $$(docker-machine env docker-host) ; docker build -t $(USERNAME)/post src/post/
 
 # build reddit-ui
 build-reddit-ui:
@@ -163,6 +163,16 @@ show-env:
 
 cluster-run:
 	cd kubernetes/terraform && terraform get && terraform init && terraform apply -auto-approve=true
+	kubectl apply -f kubernetes/reddit/tiller.yml
+	helm init --service-account tiller
+
+cluster-gitlab-run:
+	cd kubernetes/Charts/gitlab-omnibus/ && helm install --name gitlab . -f values.yaml
+
+cluster-get-gitlab-ip:
+	kubectl get service -n nginx-ingress nginx
+
+# echo "35.184.199.209 gitlab-gitlab staging production” >> /etc/hosts
 
 cluster-destroy:
 	cd kubernetes/terraform && terraform destroy -auto-approve=true
