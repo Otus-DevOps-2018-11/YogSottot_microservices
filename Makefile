@@ -167,7 +167,7 @@ cluster-run:
 	helm init --service-account tiller
 
 cluster-gitlab-run:
-    cd kubernetes/Charts/gitlab-omnibus/ && helm install --name gitlab . -f values.yaml
+	cd kubernetes/Charts/gitlab-omnibus/ && helm install --name gitlab . -f values.yaml
 
 cluster-get-gitlab-ip:
 	kubectl get service -n nginx-ingress nginx
