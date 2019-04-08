@@ -2190,14 +2190,12 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 - Создана группа ```yogsottot```
 - Созданы проекты ```reddit-deploy```, ```post```, ```ui```, ```comment``` и загружены необходимые файлы  
 - Добавлен ```gitlab-ci``` в проекты ```ui```, ```post```, ```comment``` и проверено, что все pipelines отработали без ошибок  
-- 
-
+- Проверен автодеплой приложения при коммите в feature-ветку  
+  
   <details><summary>Проверка</summary><p>
 
-  ```bash
-
-
-
-  ```
+  ![git](https://i.imgur.com/wHuEcz4.png)
 
   </p></details>
+
+- Проверен деплой в ```staging``` и ```prodaction``` окружения  
