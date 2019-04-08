@@ -2128,8 +2128,64 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 - Всталена функция ```<service>.fullname``` в каждый ```_helpers.tpl``` файл. ```<service>``` замененён на имя чарта соотв. сервиса  
 - В каждом из шаблонов манифестов функция вставлена там, где это требуется  
 
-- Создан единый Chart ```reddit```, который объединит компоненты приложения  
+- Создан единый Chart ```reddit```, который объединит компоненты приложения, запущено приложение  
 
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+  >helm install reddit --name reddit-test
+  NAME:   reddit-test
+  LAST DEPLOYED: Mon Apr  8 10:30:49 2019
+  NAMESPACE: default
+  STATUS: DEPLOYED
+  
+  RESOURCES:
+  ==> v1/PersistentVolumeClaim
+  NAME                 STATUS   VOLUME    CAPACITY  ACCESS MODES  STORAGECLASS  AGE
+  reddit-test-mongodb  Pending  standard  2s
+  
+  ==> v1/Pod(related)
+  NAME                                  READY  STATUS             RESTARTS  AGE
+  reddit-test-comment-768b76f8ff-gpbqb  0/1    ContainerCreating  0         1s
+  reddit-test-mongodb-76b9b9cd7-5k785   0/1    Pending            0         1s
+  reddit-test-post-59f74795b7-v9qjw     0/1    ContainerCreating  0         1s
+  reddit-test-ui-5686d857d7-4kx87       0/1    ContainerCreating  0         1s
+  reddit-test-ui-5686d857d7-7mp9r       0/1    ContainerCreating  0         1s
+  reddit-test-ui-5686d857d7-jzn8n       0/1    ContainerCreating  0         1s
+  
+  ==> v1/Secret
+  NAME                 TYPE    DATA  AGE
+  reddit-test-mongodb  Opaque  1     2s
+  
+  ==> v1/Service
+  NAME                 TYPE       CLUSTER-IP     EXTERNAL-IP  PORT(S)         AGE
+  reddit-test-comment  ClusterIP  10.47.245.182  <none>       9292/TCP        2s
+  reddit-test-mongodb  ClusterIP  10.47.249.22   <none>       27017/TCP       2s
+  reddit-test-post     ClusterIP  10.47.244.230  <none>       5000/TCP        2s
+  reddit-test-ui       NodePort   10.47.255.24   <none>       9292:31298/TCP  1s
+  
+  ==> v1beta1/Deployment
+  NAME                 READY  UP-TO-DATE  AVAILABLE  AGE
+  reddit-test-mongodb  0/1    1           0          1s
+  reddit-test-ui       0/3    3           0          1s
+  
+  ==> v1beta1/Ingress
+  NAME            HOSTS  ADDRESS  PORTS  AGE
+  reddit-test-ui  *      80       1s
+  
+  ==> v1beta2/Deployment
+  NAME                 READY  UP-TO-DATE  AVAILABLE  AGE
+  reddit-test-comment  0/1    1           0          1s
+  reddit-test-post     0/1    1           0          1s
+
+  ```
+
+  </p></details>
+
+### GitLab + Kubernetes  
+
+- 
 
   <details><summary>Проверка</summary><p>
 

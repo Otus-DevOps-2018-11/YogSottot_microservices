@@ -163,6 +163,8 @@ show-env:
 
 cluster-run:
 	cd kubernetes/terraform && terraform get && terraform init && terraform apply -auto-approve=true
+	kubectl apply -f kubernetes/reddit/tiller.yml
+	helm init --service-account tiller
 
 cluster-destroy:
 	cd kubernetes/terraform && terraform destroy -auto-approve=true

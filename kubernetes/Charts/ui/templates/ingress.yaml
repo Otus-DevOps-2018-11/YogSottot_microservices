@@ -7,9 +7,9 @@ metadata:
     kubernetes.io/ingress.class: "gce"
 spec:
   rules:
-  - http:
-      paths:
-      - path: /*
-        backend:
-          serviceName: {{ template "ui.fullname" . }}
-          servicePort: {{ .Values.service.externalPort }}
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: {{ template "ui.fullname" . }}
+              servicePort: {{ .Values.service.externalPort }}

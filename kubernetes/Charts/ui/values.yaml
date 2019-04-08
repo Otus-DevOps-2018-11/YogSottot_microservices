@@ -4,5 +4,10 @@ service:
   externalPort: 9292
 
 image:
-  repository: yogsottot
-tag: latest
+  repository: yogsottot/ui
+  tag: latest
+
+postHost:
+postPort:
+commentHost:
+commentPort:
