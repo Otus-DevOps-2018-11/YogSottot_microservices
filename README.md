@@ -2199,3 +2199,30 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   </p></details>
 
 - Проверен деплой в ```staging``` и ```prodaction``` окружения  
+
+### Задание *
+
+- Связаны пайплайны сборки образов и пайплайн деплоя на staging и production так, чтобы после релиза образа из ветки мастер - запускался деплой уже новой версии приложения на staging  
+  Использован механизм [Pipeline triggers](https://gitlab.com/help/ci/triggers/README)  
+  В проекте ```reddit-deploy``` добавлен с вызовом триггера  
+  В проектах ```post```, ```ui```, ```comment``` в ```gitlab-ci``` добавлен блок с триггером  
+
+  <details><summary>Код</summary><p>
+
+  ```bash
+
+  trigger_build:
+    stage: stage_autodeploy
+    script:
+      - apk add curl
+      - "curl -X POST -F token=b0032cb31c791904e021fe735346f6 -F ref=master http://gitlab-gitlab/api/v4/projects/1/trigger/pipeline"
+    only:
+      refs:
+        - master
+      kubernetes: active  
+
+  ```
+
+  ![trigger](https://i.imgur.com/T1mdktf.jpg)
+
+  </p></details>

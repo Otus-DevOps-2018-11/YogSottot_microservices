@@ -7,6 +7,7 @@ stages:
   - review
   - release
   - cleanup
+  - stage_autodeploy
 
 build:
   stage: build
@@ -78,6 +79,16 @@ stop_review:
     kubernetes: active
   except:
     - master
+
+trigger_build:
+  stage: stage_autodeploy
+  script:
+    - apk add curl
+    - "curl -X POST -F token=b0032cb31c791904e021fe735346f6 -F ref=master http://gitlab-gitlab/api/v4/projects/1/trigger/pipeline"
+  only:
+    refs:
+      - master
+    kubernetes: active 
 
 .auto_devops: &auto_devops |
   [[ "$TRACE" ]] && set -x
