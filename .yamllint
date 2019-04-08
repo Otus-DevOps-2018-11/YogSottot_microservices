@@ -4,6 +4,7 @@ ignore: |
     *
     !*.yaml
     !*.yml
+    kubernetes/Charts/gitlab-omnibus/
 
 rules:
   braces:

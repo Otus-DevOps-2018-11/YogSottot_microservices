@@ -2185,6 +2185,11 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ### GitLab + Kubernetes  
 
+- В terraform добавлено создание дополнительного пула с более мощным vps и отключение rbac  
+- Добавлен [устаревший](https://gitlab.com/charts/gitlab-omnibus) chart ```gitlab/gitlab-omnibus```, запущен gitlab  
+- Создана группа ```yogsottot```
+- Созданы проекты ```reddit-deploy```, ```post```, ```ui```, ```comment``` и загружены необходимые файлы  
+- Добавлен ```gitlab-ci``` в проекты ```ui```, ```post```, ```comment``` и проверено, что все pipelines отработали без ошибок  
 - 
 
   <details><summary>Проверка</summary><p>
