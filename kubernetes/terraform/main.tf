@@ -16,6 +16,10 @@ resource "google_container_node_pool" "np" {
     image_type   = "COS"
     machine_type = "n1-standard-2"
 
+    labels = {
+      elastichost = true
+    }
+
     oauth_scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -39,6 +43,9 @@ resource "google_container_cluster" "primary" {
   initial_node_count = "${var.count_gke_node}"
 
   # Setting an empty username and password explicitly disables basic auth
+
+  logging_service    = "none"
+  monitoring_service = "none"
   master_auth {
     username = ""
     password = ""
@@ -47,7 +54,6 @@ resource "google_container_cluster" "primary" {
       issue_client_certificate = false
     }
   }
-
   node_config {
     disk_size_gb = "${var.disk_size}"
     disk_type    = "${var.disk_type}"
@@ -64,7 +70,6 @@ resource "google_container_cluster" "primary" {
       "https://www.googleapis.com/auth/trace.append",
     ]
   }
-
   addons_config {
     http_load_balancing {
       disabled = false
@@ -82,7 +87,6 @@ resource "google_container_cluster" "primary" {
       disabled = false
     }
   }
-
   enable_legacy_abac = true
 
   #  ip_allocation_policy {

@@ -2016,6 +2016,8 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 ## ДЗ №23. Интеграция Kubernetes в GitlabCI  
 
+<details><summary>Спойлер</summary><p>
+
 ### Работа с Helm  
 
 - Добавлен манифест для tiller  
@@ -2224,5 +2226,81 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ```
 
   ![trigger](https://i.imgur.com/T1mdktf.jpg)
+
+  </p></details>
+
+</p></details>
+
+## ДЗ №24. Kubernetes. Мониторинг и логирование  
+
+- В terraform создаётся кластер с требуемыми характеристиками:
+  - минимум 2 ноды g1-small (1,5 ГБ)  
+  - минимум 1 нода n1-standard-2 (7,5 ГБ)  
+  В настройках:  
+  - Stackdriver Logging - Отключен  
+  - Stackdriver Monitoring - Отключен  
+  - Устаревшие права доступа - Включено  
+- Из Helm-чарта установлен ingress-контроллер nginx ```helm install stable/nginx-ingress --name nginx```  
+- Адрес loadbalancer добавлен в hosts
+  
+  <details><summary>Добавление</summary><p>
+
+  ```bash
+
+  >kubectl get svc
+  NAME                                  TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)                      AGE
+  kubernetes                            ClusterIP      10.47.240.1     <none>          443/TCP                      14m
+  nginx-nginx-ingress-controller        LoadBalancer   10.47.247.0     35.228.53.133   80:32472/TCP,443:32089/TCP   3m
+  nginx-nginx-ingress-default-backend   ClusterIP      10.47.251.121   <none>          80/TCP                       3m
+
+  >echo "35.228.53.133 reddit reddit-prometheus reddit-grafana reddit-non-prod production reddit-kibana staging prod" >> /etc/hosts
+
+  ```
+
+  </p></details>
+
+### Мониторинг  
+
+- Добавлен chart для prometheus. ```helm fetch --untar stable/prometheus```  
+- Запущен prometheus ```helm upgrade prom . -f custom_values.yml --install```. Проверено, что web-интерфейс доступен и в Targets присутствуют метрики API-сервера, метрики нод с cadvisor’ов, сам prometheus  
+- Включен kube-state-metrics, появился target kubernetes-service-endpoints  
+- Включен node-exporter, появились 3 новых target  
+- Запущено приложение reddit, добавлены reddit-endpoints  
+- Разбита конфигурация job’а `reddit-endpoints` так, чтобы было 3 job’а для каждой из компонент приложений (post-endpoints, comment-endpoints, ui-endpoints)  
+
+### Визуализация и Templating
+
+- Установлена grafana с помощью helm  
+
+  ```bash
+
+  helm upgrade --install grafana stable/grafana --set "adminPassword=admin" \
+  --set "service.type=NodePort" \
+  --set "ingress.enabled=true" \
+  --set "ingress.hosts={reddit-grafana}"
+  
+  ```
+
+- Добавлен datasource ```http://prom-prometheus-server```, добавлена панель 315, а также панели созданные в предыдущих дз  
+- Параметризированы все Dashboard’ы, отражающие параметры работы приложения reddit для работы с несколькими окружениями(неймспейсами). Сохранены в `kubernetes/monitoring/grafana`  
+
+#### Задание со* №1
+
+- Запущен alertmanager в k8s и настроены правила для контроля за доступностью api-сервера и хостов k8s.  
+
+#### Задание со* №2
+
+- Установлен в кластер [Prometheus Operator](https://github.com/helm/charts/tree/master/stable/prometheus-operator) с помощью helm charts  
+- Настроен мониторинг post-endpoints  
+- Сохранён конфиг `custom_values.yml` в `kubernetes/Charts/prometheus-operator`  
+
+
+
+  <details><summary>Проверка</summary><p>
+
+  ```bash
+
+
+  ```
 
   </p></details>
