@@ -2320,3 +2320,7 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
   ```
 
   </p></details>
+
+#### Задание со *  
+
+- Создан Helm-чарт для установки стека EFK и помещён в директорию `kubernetes/Charts/efk`  
