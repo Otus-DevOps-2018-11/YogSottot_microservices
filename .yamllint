@@ -5,8 +5,8 @@ ignore: |
     !*.yaml
     !*.yml
     kubernetes/Charts/gitlab-omnibus/
-    kubernetes/Charts/prometheus/templates/
-    kubernetes/Charts/prometheus/values.yaml
+    kubernetes/Charts/prometheus/
+    kubernetes/Charts/prometheus-operator/
 
 rules:
   braces:

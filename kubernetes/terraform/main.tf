@@ -17,7 +17,7 @@ resource "google_container_node_pool" "np" {
     machine_type = "n1-standard-2"
 
     labels = {
-      elastichost = true
+      elastichost = "true"
     }
 
     oauth_scopes = [

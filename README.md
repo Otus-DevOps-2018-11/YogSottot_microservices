@@ -2294,12 +2294,28 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 - Настроен мониторинг post-endpoints  
 - Сохранён конфиг `custom_values.yml` в `kubernetes/Charts/prometheus-operator`  
 
+### Логирование  
 
+- Добавлены манифесты efk, запущен efk
+- Запущена kibana
 
-  <details><summary>Проверка</summary><p>
+  <details><summary>Запуск</summary><p>
 
   ```bash
 
+  >kubectl apply -f efk/
+  statefulset.apps/elasticsearch-logging created
+  service/elasticsearch-logging created
+  persistentvolumeclaim/elasticsearch-logging-claim created
+  configmap/fluentd-es-config-v0.1.1 created
+  daemonset.apps/fluentd-es-v2.0.2 created
+  
+  
+  >helm upgrade --install kibana stable/kibana \
+  --set "ingress.enabled=true" \
+  --set "ingress.hosts={reddit-kibana}" \
+  --set "env.ELASTICSEARCH_URL=http://elasticsearch-logging:9200" \
+  --version 0.1.1
 
   ```
 
