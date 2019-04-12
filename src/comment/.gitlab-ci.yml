@@ -88,7 +88,7 @@ trigger_build:
   only:
     refs:
       - master
-    kubernetes: active  
+    kubernetes: active
 
 
 .auto_devops: &auto_devops |

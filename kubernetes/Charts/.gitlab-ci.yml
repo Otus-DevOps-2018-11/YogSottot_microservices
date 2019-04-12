@@ -1,3 +1,4 @@
+---
 image: alpine:latest
 
 stages:
@@ -16,10 +17,10 @@ test:
 staging:
   stage: staging
   script:
-  - install_dependencies
-  - ensure_namespace
-  - install_tiller
-  - deploy
+    - install_dependencies
+    - ensure_namespace
+    - install_tiller
+    - deploy
   variables:
     KUBE_NAMESPACE: staging
   environment:
