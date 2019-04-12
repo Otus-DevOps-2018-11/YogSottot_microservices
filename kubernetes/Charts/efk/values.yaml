@@ -1,11 +1,9 @@
 ---
 kibana:
-  image:
-    repository: "kibana"
-    tag: "5.4.3"
   ingress:
     enabled: true
-    hosts: {reddit-kibana}
+    hosts: 
+     - reddit-kibana
+    annotations: nginx
   env:
-    SERVER_PORT: 5601
     ELASTICSEARCH_URL: http://elasticsearch-logging:9200

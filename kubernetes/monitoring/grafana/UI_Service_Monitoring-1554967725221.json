@@ -15,8 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
-  "iteration": 1554967668231,
+  "id": 2,
+  "iteration": 1555068032428,
   "links": [],
   "panels": [
     {
@@ -52,6 +52,7 @@
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
+      "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
@@ -136,6 +137,7 @@
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
+      "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
@@ -219,6 +221,7 @@
       "points": true,
       "renderer": "flot",
       "seriesOverrides": [],
+      "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
@@ -273,7 +276,7 @@
       }
     }
   ],
-  "refresh": "10s",
+  "refresh": "5s",
   "schemaVersion": 18,
   "style": "dark",
   "tags": [],
@@ -282,6 +285,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": false,
           "tags": [],
           "text": "All",
           "value": [
@@ -328,7 +332,7 @@
           }
         ],
         "query": "label_values(namespace)",
-        "refresh": 0,
+        "refresh": 1,
         "regex": "/.+/",
         "skipUrlSync": false,
         "sort": 0,
@@ -341,7 +345,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -372,5 +376,5 @@
   "timezone": "",
   "title": "UI_Service_Monitoring",
   "uid": "9jvf68Cmz",
-  "version": 3
+  "version": 2
 }

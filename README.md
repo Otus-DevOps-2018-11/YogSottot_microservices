@@ -2290,9 +2290,9 @@ YogSottot microservices repository ![Build Status](https://travis-ci.com/Otus-De
 
 #### Задание со* №2
 
-- Установлен в кластер [Prometheus Operator](https://github.com/helm/charts/tree/master/stable/prometheus-operator) с помощью helm charts  
+- Установлен в кластер Prometheus Operator, попробованы вариант установки с помощью [helm charts](https://github.com/helm/charts/tree/master/stable/prometheus-operator)  
 - Настроен мониторинг post-endpoints  
-- Сохранён конфиг `custom_values.yml` в `kubernetes/Charts/prometheus-operator`  
+- Cохранён конфиг `custom_values.yml` в `kubernetes/Charts/prometheus-operator`  
 
 ### Логирование  
 

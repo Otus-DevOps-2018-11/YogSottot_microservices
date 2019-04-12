@@ -174,7 +174,9 @@ cluster-get-gitlab-ip:
 
 # echo "35.184.199.209 gitlab-gitlab staging production” >> /etc/hosts
 
-cluster-destroy:
+cluster-destroy: cluster-remove-app-prod-stage cluster-remove-app-prometheus cluster-remove-efk cluster-del-gce
+
+cluster-del-gce:
 	cd kubernetes/terraform && terraform destroy -auto-approve=true
 
 cluster-get-ip:
@@ -182,3 +184,40 @@ cluster-get-ip:
 
 cluster-gen-secret:
 	kubectl get ingress -n dev | grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}' | ./kubernetes/terraform/files/ingress_ip.sh -
+
+cluster-setup-ingress:
+	helm install --version=1.4.0 stable/nginx-ingress --name nginx
+
+cluster-get-nginx-ip:
+	kubectl get svc | grep nginx-nginx-ingress-controller
+
+cluster-install-app-prod-stage:
+	helm upgrade production --namespace production kubernetes/Charts/reddit/ --install
+	helm upgrade staging --namespace staging kubernetes/Charts/reddit/ --install
+
+cluster-remove-app-prod-stage:
+	helm del --purge production || true
+	helm del --purge staging || true
+
+cluster-install-app-prometheus:
+	helm upgrade prom kubernetes/Charts/prometheus/ -f kubernetes/Charts/prometheus/custom_values.yml --install
+	helm upgrade --version=3.2.0 --install grafana stable/grafana --set "adminPassword=admin" --set "service.type=NodePort" --set "ingress.enabled=true" --set "ingress.hosts={reddit-grafana}"
+
+cluster-remove-app-prometheus:
+	helm del --purge prom || true
+	helm del --purge grafana || true
+	kubectl delete crd alertmanagers.monitoring.coreos.com prometheuses.monitoring.coreos.com prometheusrules.monitoring.coreos.com servicemonitors.monitoring.coreos.com || true
+
+# kubectl get all crd
+
+# get all resources
+# kubectl api-resources --verbs=list -o name | xargs -n 1 kubectl get -o name
+
+cluster-install-app-prometheus-operator:
+	helm upgrade prom kubernetes/Charts/prometheus-operator/ -f kubernetes/Charts/prometheus-operator/custom_values.yml --install
+
+cluster-install-efk:
+	helm upgrade efk kubernetes/Charts/efk/ --install
+
+cluster-remove-efk:
+	helm del --purge efk || true
